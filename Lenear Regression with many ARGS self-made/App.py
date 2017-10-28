@@ -1,56 +1,25 @@
-
+from Functions import coeffs_sgd, data_load, str_column_to_float, dataset_minmax, normalize_dataset, evaluate_algorithm, linear_regression_sgd, cross_validation_split
+from random import seed
 #Predict Price
 def main():
     print('Self Made Linear Regression')
-    file = open(r'train.tsv')
-    file2 = open(r'in.tsv')
 
-    X_price = []
-    X_mileage = []
-    X_year = []
-    X_brand = []
-    X_engineType = []
-    X_engineCapacity = []
-    carsX = []
+    seed(1)
 
-    X_mileage_test = []
-    X_year_test = []
-    X_brand_test = []
-    X_engineType_test = []
-    X_engineCapacity_test = []
-    carsX_test = []
+    filename = 'train.tsv'
+    dataset = data_load(filename)
+    for i in range(len(dataset[0])):
+        str_column_to_float(dataset, i)
+    minmax = dataset_minmax(dataset)
+    normalize_dataset(dataset, minmax)
 
-    for line in file:
-        line = line.split()
+    n_folds = 5
+    l_rate = 0.01
+    n_epochs = 50
+    scores = evaluate_algorithm(dataset, linear_regression_sgd(), n_folds, l_rate, n_epochs)
+    print("Scores: ", scores)
+    print("Mean RMSE: ", (sum(scores)/float(len(scores))))
 
-        X_price.append(line[0])
-        X_mileage.append(line[1])
-        X_year.append(line[2])
-        X_brand.append(line[3])
-        X_engineType.append(line[4])
-        X_engineCapacity.append(line[5])
-
-    carsX.append(X_price)
-    carsX.append(X_mileage)
-    carsX.append(X_year)
-    carsX.append(X_brand)
-    carsX.append(X_engineType)
-    carsX.append(X_engineCapacity)
-
-    for line in file2:
-        line = line.split()
-
-        X_mileage_test.append(line[0])
-        X_year_test.append(line[1])
-        X_brand_test.append(line[2])
-        X_engineType_test.append(line[3])
-        X_engineCapacity_test.append(line[4])
-
-    carsX_test.append(X_mileage_test)
-    carsX_test.append(X_year_test)
-    carsX_test.append(X_brand_test)
-    carsX_test.append(X_engineType_test)
-    carsX_test.append(X_engineCapacity_test)
 
 
 
