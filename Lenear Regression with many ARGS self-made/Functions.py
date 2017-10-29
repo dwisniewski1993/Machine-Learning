@@ -1,5 +1,3 @@
-from random import randrange
-from math import sqrt
 from csv import reader
 
 #Load dataset
@@ -20,10 +18,15 @@ def str_column_to_float(dataset, column):
         try:
             row[column] = float(row[column].strip())
         except:
-            print("Vallue Error")
             s = row[column]
             q = ''.join(str(ord(c)) for c in s)
             row[column] = float(q)
+
+#Price column switch
+def price_column(dataset):
+    for row in dataset:
+        price = row.pop(0)
+        row.append(price)
 
 # Find the min and max values for each column
 def dataset_minmax(dataset):
@@ -40,47 +43,6 @@ def normalize_dataset(dataset, minmax):
 	for row in dataset:
 		for i in range(len(row)):
 			row[i] = (row[i] - minmax[i][0]) / (minmax[i][1] - minmax[i][0])
-
-# Split a dataset into k folds
-def cross_validation_split(dataset, n_folds):
-    dataset_split = list()
-    dataset_copy = list(dataset)
-    fold_size = int(len(dataset) / n_folds)
-    for i in range(n_folds):
-        fold = list()
-        while len(fold) < fold_size:
-            index = randrange(len(dataset_copy))
-            fold.append(dataset_copy.pop(index))
-        dataset_split.append(fold)
-    return dataset_split
-
-# Calculate root mean squared error
-def rmse_metric(actual, predicted):
-    sum_error = 0.0
-    for i in range(len(actual)):
-        prediction_error = predicted[i] - actual[i]
-        sum_error += (prediction_error ** 2)
-    mean_error = sum_error / float(len(actual))
-    return sqrt(mean_error)
-
-# Evaluate an algorithm using a cross validation split
-def evaluate_algorithm(dataset, algorithm, n_folds, *args):
-	folds = cross_validation_split(dataset, n_folds)
-	scores = list()
-	for fold in folds:
-		train_set = list(folds)
-		train_set.remove(fold)
-		train_set = sum(train_set, [])
-		test_set = list()
-		for row in fold:
-			row_copy = list(row)
-			test_set.append(row_copy)
-			row_copy[-1] = None
-		predicted = algorithm(train_set, test_set, *args)
-		actual = [row[-1] for row in fold]
-		rmse = rmse_metric(actual, predicted)
-		scores.append(rmse)
-	return scores
 
 #Make a prediction
 def predict(row, coeffs):
