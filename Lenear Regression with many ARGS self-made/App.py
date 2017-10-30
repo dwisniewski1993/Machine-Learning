@@ -19,10 +19,10 @@ def main():
         str_column_to_float(dataset, i)
     for i in range(len(dataset2[0])):
         str_column_to_float(dataset2, i)
-    #minmax = dataset_minmax(dataset)
-    #normalize_dataset(dataset, minmax)
-    #minmax2 = dataset_minmax(dataset2)
-    #normalize_dataset(dataset2, minmax2)
+    minmax = dataset_minmax(dataset)
+    normalize_dataset(dataset, minmax)
+    minmax2 = dataset_minmax(dataset2)
+    normalize_dataset(dataset2, minmax2)
 
     l_rate = 0.01
     n_epoch = 50
