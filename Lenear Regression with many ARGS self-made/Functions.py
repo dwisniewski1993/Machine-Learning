@@ -18,15 +18,31 @@ def str_column_to_float(dataset, column):
         try:
             row[column] = float(row[column].strip())
         except:
-            s = row[column]
-            q = ''.join(str(ord(c)) for c in s)
-            row[column] = float(q)
+            if row[column]=='diesiel':
+                row[column] = float(1)
+            elif row[column]=='benzyna':
+                row[column] = float(2)
+            elif row[column] =='gaz':
+                row[column] = float(3)
+            else:
+                s = row[column]
+                q = ''.join(str(ord(c)) for c in s)
+                row[column] = float(q)
 
 #Price column switch
 def price_column(dataset):
     for row in dataset:
         price = row.pop(0)
         row.append(price)
+
+#Del mark functions
+def del_mark1(dataset):
+    for row in dataset:
+        mark = row.pop(3)
+
+def del_mark2(dataset):
+    for row in dataset:
+        mark = row.pop(2)
 
 # Find the min and max values for each column
 def dataset_minmax(dataset):
