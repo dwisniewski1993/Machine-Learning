@@ -28,12 +28,12 @@ def str_column_to_float(dataset, column):
         try:
             row[column] = float(row[column].strip())
         except:
-            if row[column]=='diesiel':
-                row[column] = float(11)
+            if row[column]=='diesel':
+                row[column] = float(1)
             elif row[column]=='benzyna':
-                row[column] = float(21)
+                row[column] = float(2)
             elif row[column] =='gaz':
-                row[column] = float(31)
+                row[column] = float(3)
             else:
                 s = row[column]
                 q = ''.join(str(ord(c)) for c in s)
