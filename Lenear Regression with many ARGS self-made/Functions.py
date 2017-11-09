@@ -11,6 +11,16 @@ def data_load(filename):
             dataset.append(row)
     return dataset
 
+def switch_ONES_column(dataset):
+    for each in dataset:
+        i = 0
+        while i < 5:
+            thing = each.pop(0)
+            each.append(thing)
+            i = i + 1
+
+
+
 #Convert string to float
 def str_column_to_float(dataset, column):
     for row in dataset:
@@ -19,11 +29,11 @@ def str_column_to_float(dataset, column):
             row[column] = float(row[column].strip())
         except:
             if row[column]=='diesiel':
-                row[column] = float(1)
+                row[column] = float(11)
             elif row[column]=='benzyna':
-                row[column] = float(2)
+                row[column] = float(21)
             elif row[column] =='gaz':
-                row[column] = float(3)
+                row[column] = float(31)
             else:
                 s = row[column]
                 q = ''.join(str(ord(c)) for c in s)
@@ -56,9 +66,9 @@ def dataset_minmax(dataset):
 
 # Rescale dataset columns to the range 0-1
 def normalize_dataset(dataset, minmax):
-	for row in dataset:
-		for i in range(len(row)):
-			row[i] = (row[i] - minmax[i][0]) / (minmax[i][1] - minmax[i][0])
+    for row in dataset:
+        for i in range(len(row)):
+            row[i] = (row[i] - minmax[i][0]) / (minmax[i][1] - minmax[i][0])
 
 #Make a prediction
 def predict(row, coeffs):
@@ -82,11 +92,13 @@ def coeffs_sgd(train, l_rate, n_epochs):
         print("Epoch= ", epoch, ", lrate=", l_rate, ", error=", sum_error)
     return coeff
 
+
 # Linear Regression Algorithm With Stochastic Gradient Descent
 def linear_regression_sgd(train, test, l_rate, n_epoch):
-	predictions = list()
-	coef = coeffs_sgd(train, l_rate, n_epoch)
-	for row in test:
-		yhat = predict(row, coef)
-		predictions.append(yhat)
-	return(predictions)
+    predictions = list()
+    coef = coeffs_sgd(train, l_rate, n_epoch)
+    print(coef)
+    for row in test:
+        yhat = predict(row, coef)
+        predictions.append(yhat)
+    return predictions
