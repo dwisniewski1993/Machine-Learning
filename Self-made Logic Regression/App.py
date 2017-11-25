@@ -66,7 +66,7 @@ def main():
             each = 'M'
         elif each == 1:
             each = 'F'
-        out1.write(each + '\n')
+        out2.write(each + '\n')
         print(each)
 
     for each in scores3:
@@ -74,7 +74,7 @@ def main():
             each = 'M'
         elif each == 1:
             each = 'F'
-        out1.write(each + '\n')
+        out3.write(each + '\n')
         print(each)
 
     out1.close()
