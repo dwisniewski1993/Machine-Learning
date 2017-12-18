@@ -24,8 +24,8 @@ def main():
     array3 = dataframe3.values
 
     # Separate X and Y
-    X = array[:, 0:22]
-    Y = array[:, 22]
+    X = array[:, 1:23]
+    Y = array[:, 0]
 
     #String to float
     for i in range(len(X[0])):
