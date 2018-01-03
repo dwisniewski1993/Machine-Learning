@@ -18,13 +18,13 @@ def main():
     print("Naural Network for regression")
 
     # In files
-    train_file = 'train/train.tsv'
-    dev0_file = 'dev-0/in.tsv'
-    testA_file = 'test-A/in.tsv'
+    train_file = '../train/train.tsv'
+    dev0_file = '../dev-0/in.tsv'
+    testA_file = '../test-A/in.tsv'
 
     # Out files
-    out_dev0 = open(r'dev-0/out.tsv', 'w', encoding='utf-8')
-    out_testA = open(r'test-A/out.tsv', 'w', encoding='utf-8')
+    out_dev0 = open(r'../dev-0/out.tsv', 'w', encoding='utf-8')
+    out_testA = open(r'../test-A/out.tsv', 'w', encoding='utf-8')
 
     #Load files
     dataframe = pd.read_csv(train_file, sep='\t', header=None)
@@ -56,7 +56,7 @@ def main():
     net = tflearn.fully_connected(net, 32)
     net = tflearn.fully_connected(net, 16)
     net = tflearn.fully_connected(net, 8)
-    net = tflearn.fully_connected(net, 3)
+    net = tflearn.fully_connected(net, 4)
     linear = tflearn.fully_connected(net, 1, activation='linear')
     regression = tflearn.regression(linear, optimizer='sgd', metric='R2', loss='mean_square', learning_rate=0.01)
 
