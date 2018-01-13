@@ -9,10 +9,10 @@ def str_column_to_float(dataset, column):
         row[column] = int(ord(row[column]))
 
 #Labels to int
-def label_to_int(dataset):
-    label = list()
+def label_to_one_hot(dataset):
+    label = []
     for each in dataset:
-        each = 1 if each == 'e' else 0
+        each = [1, 0] if each == 'e' else [0, 1]
         label.append(each)
     return label
 
@@ -55,50 +55,66 @@ def main():
         str_column_to_float(array2, i)
     for i in range(len(array3[0])):
         str_column_to_float(array3, i)
-    Y = label_to_int(Y)
-    Y = np.array(Y)
-    print("Y.shape=", Y.shape)
-    print(Y)
-
-    #one hot encoding
-    Y = keras.utils.to_categorical(Y, NUM_CLASSES)
+    Y = label_to_one_hot(Y)
 
     print("Przykładów uczących: ", X.shape[0])
     print("Przykładów test-A: ", dev0.shape[0])
     print("Przykładów dev-0: ", testA.shape[0])
 
-    print("X.shape=", X.shape)
-    print("X.shape[1]=", X.shape[1])
-    print("Y.shape=", Y.shape)
-
     #Making model
     model = keras.models.Sequential()
-    model.add(keras.layers.Dense(512, activation='relu', input_shape=(X.shape[1],)))
+    model.add(keras.layers.Dense(128, activation='relu', input_shape=(X.shape[1],)))
+    model.add(keras.layers.Dropout(0.2))
+    model.add(keras.layers.Dense(256, activation='relu'))
     model.add(keras.layers.Dropout(0.2))
     model.add(keras.layers.Dense(512, activation='relu'))
+    model.add(keras.layers.Dropout(0.2))
+    model.add(keras.layers.Dense(1024, activation='relu'))
+    model.add(keras.layers.Dropout(0.2))
+    model.add(keras.layers.Dense(512, activation='relu'))
+    model.add(keras.layers.Dropout(0.2))
+    model.add(keras.layers.Dense(256, activation='relu'))
+    model.add(keras.layers.Dropout(0.2))
+    model.add(keras.layers.Dense(128, activation='relu'))
     model.add(keras.layers.Dropout(0.2))
     model.add(keras.layers.Dense(NUM_CLASSES, activation='softmax'))
     model.summary()
 
     #Compile
-    model.compile(loss='categorical_crossentropy', optimizer=keras.optimizers.RMSprop(), metrics=['accuracy'])
+    model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
     #Fit model
-    model.fit(X, Y, batch_size=128, epochs=5, verbose=1)
+    model.fit(X, Y, batch_size=128, epochs=10, verbose=1)
 
     #Predict scores
     scores_dev = model.predict(dev0)
     scores_test = model.predict(testA)
 
+    print("DEV SCORES: ")
     #Saving dev scores
     for each in scores_dev:
         print(each)
-        out_dev0.write(str(each) + '\n')
+        if each[0]>each[1]:
+            each = 'e'
+        else:
+            each = 'p'
+        print(each)
+        out_dev0.write(each + '\n')
 
+    print("TEST SCORES: ")
     #Saving test scores
     for each in scores_test:
         print(each)
-        out_testA.write(str(each) + '\n')
+        if each[0]>each[1]:
+            each = 'e'
+        else:
+            each = 'p'
+        print(each)
+        out_testA.write(each + '\n')
+
+    #Close files
+    out_testA.close()
+    out_dev0.close()
 
 
 if __name__ == "__main__":
