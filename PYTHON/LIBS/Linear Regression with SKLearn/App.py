@@ -1,14 +1,25 @@
-from sklearn import linear_model
-import numpy as np
-from ManyArgs import many_arg
-from OneArgs import one_arg
+from LR.LinearRegression import *
+
 
 file = open(r'train.tsv')
 file2 = open(r'in.tsv')
 
+
 def main():
-    one_arg()
-    many_arg()
+    print("Linear Regression")
+    trainFileLocation = r'train.tsv'
+    inFileLocation = r'in.tsv'
+
+    lr = LinearRegression(trainfile=trainFileLocation, infile=inFileLocation)
+    lr.__str__()
+    lr.train()
+
+    scores = lr.output()
+
+    for each in scores:
+        print(each)
+
+
 
 if __name__ == "__main__":
     main()
