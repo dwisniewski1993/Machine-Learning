@@ -1,5 +1,6 @@
 import pandas as pd
 from sklearn import linear_model
+from sklearn.preprocessing import MinMaxScaler
 
 
 class LinearRegression:
@@ -23,6 +24,11 @@ class LinearRegression:
 
     def __str__(self):
         print("Features values: {}, Labels values {}".format(self.X, self.Y))
+
+    def rescale(self):
+        scaler = MinMaxScaler(feature_range=(0, 1))
+        self.X = scaler.fit_transform(self.X)
+        self.inArray = scaler.fit_transform(self.inArray)
 
     def train(self):
         self.linreg = linear_model.LinearRegression()
