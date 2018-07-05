@@ -1,2 +1,2 @@
-model_checkpoint_path: "/home/dominik/Pulpit/Machine-Learning/LSTMCityNameGenerator/model_us_cities-19440"
-all_model_checkpoint_paths: "/home/dominik/Pulpit/Machine-Learning/LSTMCityNameGenerator/model_us_cities-19440"
+model_checkpoint_path: "C:\\Users\\Dominik\\Desktop\\Machine-Learning\\PYTHON\\LIBS\\LSTMCityNameGenerator\\model_us_cities-486"
+all_model_checkpoint_paths: "C:\\Users\\Dominik\\Desktop\\Machine-Learning\\PYTHON\\LIBS\\LSTMCityNameGenerator\\model_us_cities-486"
