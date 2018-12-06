@@ -7,25 +7,44 @@ from sklearn.neural_network import MLPClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import KFold
+from sklearn.preprocessing import *
 import pandas as pd
 import numpy as np
+import logging as log
 
 
 class EnsembleVotingClassifier:
+    """
+    Ensemble Voting Classifier
+    """
     def __init__(self, trainfile):
+        """
+        Ensemble Classfier Constructor
+        :param trainfile: iris data csv path
+        """
+        log.getLogger().setLevel(log.INFO)
+        log.info('Ensemble Classifier')
+
         self.sample_setosa = None
         self.sample_versicolor = None
         self.sample_virginica = None
 
+        # Load set
         self.trainfile = trainfile
         train_df = pd.read_csv(self.trainfile)
         train_array = train_df.values
 
+        # Shuffle Data
+        np.random.shuffle(train_array)
+
+        # Extract values to numpy.Arrays
         self.X = train_array[:, 0:4]
         self.Y = train_array[:, 4]
 
+        # Map string labels to numeric
         self.Y = self.map_labels(self.Y)
 
+        # Split to train-test sets
         self.X_train, self.X_test, self.Y_train, self.Y_test = train_test_split(self.X, self.Y, test_size=0.2,
                                                                                 random_state=0)
         seed = 4
@@ -51,7 +70,21 @@ class EnsembleVotingClassifier:
 
         self.ensemble = VotingClassifier(estimators=self.estimators, voting='hard')
 
+    def __str__(self):
+        """
+        Printing data
+        :return: None
+        """
+        print("Features: {}, Labels: {}".format(self.X, self.Y))
+
     def set_samples(self, setosa, versicolor, virginica):
+        """
+        Set samples
+        :param setosa: setosa flower
+        :param versicolor: versicolor flower
+        :param virginica: virginica flower
+        :return: None
+        """
         sample = np.array(setosa)
         self.sample_setosa = sample.reshape(1, -1)
 
@@ -63,25 +96,61 @@ class EnsembleVotingClassifier:
 
     @staticmethod
     def map_labels(labels):
-        maped = []
-        for each in labels:
-            if each == 'Iris-setosa':
-                maped.append(0.0)
-            elif each == 'Iris-versicolor':
-                maped.append(1.0)
-            else:
-                maped.append(2.0)
+        """
+        Maping iris data labels to numeric
+        :param labels: numpy.Arrays contains labels
+        :return: list of mapped values
+        """
+        maped = [0.0 if x == 'Iris-setosa' else 1.0 if x == 'Iris-versicolor' else 2.0 for x in labels]
         return maped
 
+    def rescale(self):
+        """
+        Rescaling data in dataset to [0,1]
+        :return: None
+        """
+        scaler = MinMaxScaler(feature_range=(0, 1))
+        self.X_train = scaler.fit_transform(self.X_train)
+        self.X_test = scaler.fit_transform(self.X_test)
+
+    def normalize(self):
+        """
+        Normalizing data in dataset
+        :return: None
+        """
+        scaler = Normalizer()
+        self.X_train = scaler.fit_transform(self.X_train)
+        self.X_test = scaler.fit_transform(self.X_test)
+
+    def standalizer(self):
+        """
+        Standardlizing data in dataset
+        :return: None
+        """
+        scaler = StandardScaler()
+        self.X_train = scaler.fit_transform(self.X_train)
+        self.X_test = scaler.fit_transform(self.X_test)
+
     def get_val_results(self):
-        result = cross_val_score(self.ensemble, self.X, self.Y, cv=self.kfold)
-        return result
+        """
+        Cross validation classification score
+        :return:
+        """
+        return cross_val_score(self.ensemble, self.X, self.Y, cv=self.kfold)
 
     def train_model(self):
+        """
+        Training models
+        :return: None
+        """
         self.ensemble.fit(self.X_train, self.Y_train)
 
     def output_score(self):
-        print("Accuracy: {:.2f}".format(self.ensemble.score(self.X_test, self.Y_test)))
+        """
+        Calculating and logging accuracy score
+        :return: None
+        """
+        log.info(f"Accuracy: {self.ensemble.score(self.X_test, self.Y_test):.2f}")
 
     def output_predictions(self):
         print("Sample 1 --------------SETOSA___0___---------------------")
