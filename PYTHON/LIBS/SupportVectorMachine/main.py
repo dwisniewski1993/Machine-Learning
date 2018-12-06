@@ -1,8 +1,11 @@
+import logging as log
+
 from SVMClassifier.SVMClassifier import SVMC
 
 
 def main():
-    print("SVM Classifier")
+    log.getLogger().setLevel(log.INFO)
+    log.info('SVM Classifier')
 
     trainFileLocation = r'train.csv'
 

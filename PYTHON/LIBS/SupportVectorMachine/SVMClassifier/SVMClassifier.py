@@ -1,3 +1,5 @@
+import logging as log
+
 import numpy as np
 import pandas as pd
 from sklearn import svm
@@ -7,6 +9,7 @@ from sklearn.preprocessing import *
 
 class SVMC:
     def __init__(self, trainfile):
+        log.getLogger().setLevel(log.INFO)
         self.trainFile = trainfile
         trainDataFrame = pd.read_csv(self.trainFile)
         trainArray = trainDataFrame.values
@@ -47,7 +50,7 @@ class SVMC:
         self.X_test = scaler.fit_transform(self.X_test)
 
     def output(self):
-        print("Accuracy: {:.2f}".format(self.svmc.score(self.X_test, self.Y_test)))
+        log.info(f"Accuracy: {self.svmc.score(self.X_test, self.Y_test):.2f}")
 
     def grid_search(self):
         hyperparam_grid = {
@@ -55,7 +58,7 @@ class SVMC:
             'gamma': [0.00001, 0.0001, 0.001, 0.01, 0.1, 1],
             'C': [1, 3, 5, 7, 9]
         }
-        classifier = GridSearchCV(svm.SVC(), hyperparam_grid)
+        classifier = GridSearchCV(svm.SVC(), hyperparam_grid, cv=5, iid=False)
         classifier.fit(self.X_train, self.Y_train)
         self.grided_params = [classifier.best_estimator_.kernel, classifier.best_estimator_.gamma,
                               classifier.best_estimator_.C]
