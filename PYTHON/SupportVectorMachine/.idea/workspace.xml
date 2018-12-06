@@ -1,0 +1,502 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="6a93b309-6ec0-4a2a-a4cf-07bafbab4120" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/../LIBS/ClaassifingMnist/.idea/ClaassifingMnist.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/ClaassifingMnist/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/ClaassifingMnist/.idea/libraries/R_User_Library.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/ClaassifingMnist/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/ClaassifingMnist/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/ClaassifingMnist/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/ClaassifingMnist/App.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/ClaassifingMnist/NN/NeuNet.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/ClaassifingMnist/mnistnet" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/Decision Tree/.idea/Decision Tree.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/Decision Tree/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/Decision Tree/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/Decision Tree/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/Decision Tree/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/Decision Tree/App.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/Decision Tree/DC/DC.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/Decision Tree/train.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/Ensemble/.idea/Ensemble.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/Ensemble/.idea/libraries/R_User_Library.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/Ensemble/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/Ensemble/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/Ensemble/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/Ensemble/App.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/Ensemble/Ensemble.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/Ensemble/train.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/KNN/.idea/LogisticRegression.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/KNN/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/KNN/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/KNN/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/KNN/App.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/KNN/KNN/kNN.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/KNN/winequality-red.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/LSTMCityNameGenerator/.idea/LSTMCityNameGenerator.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/LSTMCityNameGenerator/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/LSTMCityNameGenerator/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/LSTMCityNameGenerator/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/LSTMCityNameGenerator/App.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/LSTMCityNameGenerator/Cities.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/LSTMCityNameGenerator/LSTMNN/LSTMNN.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/LSTMCityNameGenerator/checkpoint" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/LSTMCityNameGenerator/model_us_cities-486.data-00000-of-00001" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/LSTMCityNameGenerator/model_us_cities-486.index" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/LSTMCityNameGenerator/model_us_cities-486.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/Linear Regression with SKLearn/.idea/UczenieMaszynowe1.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/Linear Regression with SKLearn/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/Linear Regression with SKLearn/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/Linear Regression with SKLearn/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/Linear Regression with SKLearn/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/Linear Regression with SKLearn/App.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/Linear Regression with SKLearn/LR/LinearRegression.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/Linear Regression with SKLearn/in.tsv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/Linear Regression with SKLearn/train.tsv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/LogisticRegression/.idea/LogisticRegression.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/LogisticRegression/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/LogisticRegression/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/LogisticRegression/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/LogisticRegression/App.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/LogisticRegression/LR/LogisticRegression.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/LogisticRegression/train.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/MGRWeb/.idea/MGRWeb.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/MGRWeb/.idea/libraries/R_User_Library.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/MGRWeb/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/MGRWeb/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/MGRWeb/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/MGRWeb/App.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/MGRWeb/features.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/MGRWeb/labels.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/MGRWeb/logs/III_Layers1-relu-sig-1024-80%-1535720735/events.out.tfevents.1535720735.MASZYNA-PHYRE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/MGRWeb/logs/III_Layers1-relu-sig-128-80%-1535720302/events.out.tfevents.1535720302.MASZYNA-PHYRE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/MGRWeb/logs/III_Layers1-relu-sig-256-80%-1535720407/events.out.tfevents.1535720407.MASZYNA-PHYRE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/MGRWeb/logs/III_Layers1-relu-sig-512-80%-1535720560/events.out.tfevents.1535720560.MASZYNA-PHYRE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/MGRWeb/logs/III_Layers1-relu-sig-64-80%-1535720143/events.out.tfevents.1535720144.MASZYNA-PHYRE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/MGRWeb/logs/III_Layers1-tanh-sig-1024-80%-1535719592/events.out.tfevents.1535719592.MASZYNA-PHYRE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/MGRWeb/logs/III_Layers1-tanh-sig-128-80%-1535719916/events.out.tfevents.1535719917.MASZYNA-PHYRE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/MGRWeb/logs/III_Layers1-tanh-sig-256-80%-1535719821/events.out.tfevents.1535719822.MASZYNA-PHYRE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/MGRWeb/logs/III_Layers1-tanh-sig-512-80%-1535719735/events.out.tfevents.1535719735.MASZYNA-PHYRE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/MGRWeb/logs/III_Layers1-tanh-sig-64-80%-1535720030/events.out.tfevents.1535720030.MASZYNA-PHYRE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/MGRWeb/logs/II_Layers1-relu-sig-1024-80%-1535716713/events.out.tfevents.1535716714.MASZYNA-PHYRE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/MGRWeb/logs/II_Layers1-sig-sig-1024-80%-1535716238/events.out.tfevents.1535716238.MASZYNA-PHYRE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/MGRWeb/logs/II_Layers1-tanh-sig-1024-80%-1535716628/events.out.tfevents.1535716629.MASZYNA-PHYRE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/MGRWeb/logs/II_Layers1-tanh-sig-1024-80%-1535717110/events.out.tfevents.1535717110.MASZYNA-PHYRE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/MGRWeb/logs/IV_Layers1-tanh-sig-1024-40%-1535721745/events.out.tfevents.1535721745.MASZYNA-PHYRE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/MGRWeb/logs/IV_Layers1-tanh-sig-256-40%-1535721940/events.out.tfevents.1535721940.MASZYNA-PHYRE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/MGRWeb/logs/IV_Layers1-tanh-sig-512-40%-1535721999/events.out.tfevents.1535721999.MASZYNA-PHYRE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/MGRWeb/logs/I_Layers1-sig-sig-1024-80%-1535714934/events.out.tfevents.1535714935.MASZYNA-PHYRE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/MGRWeb/logs/I_Layers2-sig-sig-1024-80%-1535714694/events.out.tfevents.1535714695.MASZYNA-PHYRE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/MGRWeb/logs/I_Layers3-sig-sig-1024-80%-1535714542/events.out.tfevents.1535714543.MASZYNA-PHYRE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/MGRWeb/logs/V_Layers1-tanh-sig-256-80%-1535724291/events.out.tfevents.1535724291.MASZYNA-PHYRE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/NNMultiRegression/.idea/NNMultiRegression.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/NNMultiRegression/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/NNMultiRegression/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/NNMultiRegression/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/NNMultiRegression/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/NNMultiRegression/App.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/NNMultiRegression/MultiRegressionDir/MultiRegressionPython.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/NNMultiRegression/data_generator.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/NNMultiRegression/x.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/NNMultiRegression/y.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/Naive-Bayes/.idea/LogicRegression.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/Naive-Bayes/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/Naive-Bayes/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/Naive-Bayes/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/Naive-Bayes/App.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/Naive-Bayes/NB/NB.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/Naive-Bayes/train.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/NeuralNetwork/.idea/NeuralNetwork.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/NeuralNetwork/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/NeuralNetwork/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/NeuralNetwork/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/NeuralNetwork/App.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/NeuralNetwork/RegNN/RegNN.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/NeuralNetwork/checkpoint" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/NeuralNetwork/in.tsv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/NeuralNetwork/names" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/NeuralNetwork/poznan_flats_price_predict_model.model.data-00000-of-00001" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/NeuralNetwork/poznan_flats_price_predict_model.model.index" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/NeuralNetwork/poznan_flats_price_predict_model.model.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/NeuralNetwork/train.tsv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/NeuralNetworkClassification/.idea/NeuralNetworkClassification.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/NeuralNetworkClassification/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/NeuralNetworkClassification/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/NeuralNetworkClassification/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/NeuralNetworkClassification/App.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/NeuralNetworkClassification/NNC/NNC.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/NeuralNetworkClassification/dev-0/expected.tsv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/NeuralNetworkClassification/dev-0/in.tsv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/NeuralNetworkClassification/dev-0/out.tsv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/NeuralNetworkClassification/test-A/in.tsv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/NeuralNetworkClassification/test-A/out.tsv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/NeuralNetworkClassification/train/train.tsv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/RNNMnistClassifier/.idea/RNNMnistClassifier.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/RNNMnistClassifier/.idea/libraries/R_User_Library.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/RNNMnistClassifier/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/RNNMnistClassifier/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/RNNMnistClassifier/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/RNNMnistClassifier/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/RNNMnistClassifier/App.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/RNNMnistClassifier/MnistnetModel" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/RNNMnistClassifier/NN/RecNeuNet.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/RNNMnistClassifier/NN/Utils.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/RecommendationSystem/.idea/RecommendationSystem.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/RecommendationSystem/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/RecommendationSystem/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/RecommendationSystem/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/RecommendationSystem/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/RecommendationSystem/App.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/RecommendationSystem/RecSys/Sys.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/RecommendationSystem/ml-latest-small/README.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/RecommendationSystem/ml-latest-small/links.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/RecommendationSystem/ml-latest-small/movies.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/RecommendationSystem/ml-latest-small/ratings.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/RecommendationSystem/ml-latest-small/tags.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/SupportVectorMachine/.idea/SupportVectorMachine.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/SupportVectorMachine/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/SupportVectorMachine/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/SupportVectorMachine/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/SupportVectorMachine/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../LIBS/SupportVectorMachine/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/SupportVectorMachine/App.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/SupportVectorMachine/SVMClassifier/SVMClassifier.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/SupportVectorMachine/main.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LIBS/SupportVectorMachine/train.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SELF/Lenear Regression with many ARGS self-made/.idea/Lenear Regression with many ARGS self-made.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SELF/Lenear Regression with many ARGS self-made/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SELF/Lenear Regression with many ARGS self-made/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SELF/Lenear Regression with many ARGS self-made/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SELF/Lenear Regression with many ARGS self-made/App.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SELF/Lenear Regression with many ARGS self-made/LR/LR.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SELF/Lenear Regression with many ARGS self-made/in.tsv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SELF/Lenear Regression with many ARGS self-made/train.tsv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SELF/Self-made Logic Regression/.idea/LogicRegression.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SELF/Self-made Logic Regression/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SELF/Self-made Logic Regression/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SELF/Self-made Logic Regression/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SELF/Self-made Logic Regression/App.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SELF/Self-made Logic Regression/DataPreprocessing.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SELF/Self-made Logic Regression/Functions.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SELF/Self-made Logic Regression/dev-0/expected.tsv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SELF/Self-made Logic Regression/dev-0/in.tsv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SELF/Self-made Logic Regression/dev-0/meta.tsv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SELF/Self-made Logic Regression/dev-0/out.tsv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SELF/Self-made Logic Regression/dev-1/expected.tsv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SELF/Self-made Logic Regression/dev-1/in.tsv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SELF/Self-made Logic Regression/dev-1/meta.tsv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SELF/Self-made Logic Regression/dev-1/out.tsv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SELF/Self-made Logic Regression/in_data_file.tsv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SELF/Self-made Logic Regression/in_data_file_dev0.tsv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SELF/Self-made Logic Regression/in_data_file_dev1.tsv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SELF/Self-made Logic Regression/in_data_file_testA.tsv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SELF/Self-made Logic Regression/out.tsv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SELF/Self-made Logic Regression/test-A/in.tsv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SELF/Self-made Logic Regression/test-A/out.tsv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SELF/Self-made Logic Regression/train_data_file.tsv" beforeDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CoverageDataManager">
+    <SUITE FILE_PATH="coverage/SupportVectorMachine$App.coverage" NAME="App Coverage Results" MODIFIED="1544088418489" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+  </component>
+  <component name="FUSProjectUsageTrigger">
+    <session id="267916305">
+      <usages-collector id="statistics.lifecycle.project">
+        <counts>
+          <entry key="project.open.time.1" value="1" />
+          <entry key="project.opened" value="1" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.edit">
+        <counts>
+          <entry key="py" value="76" />
+          <entry key="txt" value="12" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.edit">
+        <counts>
+          <entry key="PLAIN_TEXT" value="12" />
+          <entry key="Python" value="76" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.open">
+        <counts>
+          <entry key="py" value="1" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.open">
+        <counts>
+          <entry key="Python" value="1" />
+        </counts>
+      </usages-collector>
+    </session>
+    <session id="1765577964">
+      <usages-collector id="statistics.lifecycle.project">
+        <counts>
+          <entry key="project.closed" value="1" />
+          <entry key="project.open.time.1" value="1" />
+          <entry key="project.opened" value="1" />
+        </counts>
+      </usages-collector>
+    </session>
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/App.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="85">
+              <caret line="5" selection-start-line="5" selection-end-line="5" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/SVMClassifier/SVMClassifier.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="561">
+              <caret line="33" column="103" selection-start-line="33" selection-start-column="103" selection-end-line="33" selection-end-column="103" />
+              <folding>
+                <element signature="e#0#21#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/main.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="68">
+              <caret line="6" column="38" selection-start-line="6" selection-start-column="4" selection-end-line="6" selection-end-column="38" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/train.csv" />
+        <option value="$PROJECT_DIR$/App.py" />
+        <option value="$PROJECT_DIR$/main.py" />
+        <option value="$PROJECT_DIR$/SVMClassifier/SVMClassifier.py" />
+      </list>
+    </option>
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="1592" />
+    <option name="y" value="-553" />
+    <option name="width" value="2576" />
+    <option name="height" value="1416" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="SupportVectorMachine" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SupportVectorMachine" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager">
+    <configuration name="App" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="SupportVectorMachine" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/App.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <gulpfile />
+      <tasks />
+      <arguments />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="Unittests">
+      <module name="SupportVectorMachine" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;.&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.App" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="6a93b309-6ec0-4a2a-a4cf-07bafbab4120" name="Default" comment="" />
+      <created>1529590491211</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1529590491211</updated>
+    </task>
+    <task id="LOCAL-00001" summary="Refactor SVM">
+      <created>1544088465816</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1544088465816</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
+    <servers />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="1592" y="-553" width="2576" height="1416" extended-state="6" />
+    <editor active="true" />
+    <layout>
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1418919" />
+      <window_info id="Structure" order="1" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32917318" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Version Control" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Terminal" order="8" />
+      <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
+      <window_info anchor="bottom" id="Python Console" order="10" />
+      <window_info anchor="bottom" id="Docker" order="11" />
+      <window_info anchor="bottom" id="Database Changes" order="12" show_stripe_button="false" />
+      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Data View" order="3" />
+      <window_info anchor="right" id="Database" order="4" />
+      <window_info anchor="right" id="R Graphics" order="5" />
+      <window_info anchor="right" id="R Packages" order="6" />
+      <window_info anchor="right" id="SciView" order="7" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="true" />
+    <MESSAGE value="Refactor SVM" />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactor SVM" />
+    <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
+    <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
+    <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/train.csv">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2533">
+          <caret line="149" column="30" selection-start-line="149" selection-start-column="30" selection-end-line="149" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/App.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" selection-start-line="5" selection-end-line="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="6" column="38" selection-start-line="6" selection-start-column="4" selection-end-line="6" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SVMClassifier/SVMClassifier.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="561">
+          <caret line="33" column="103" selection-start-line="33" selection-start-column="103" selection-end-line="33" selection-end-column="103" />
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>
