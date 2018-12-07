@@ -1,14 +1,4 @@
-from LR.LogisticRegression import *
-
-
-def main():
-    print("Logistic Regression")
-
-    trainFilelocation = r'train.csv'
-
-    logreg = LogisticsRegression(trainfile=trainFilelocation)
-    logreg.modelFiting()
-    logreg.output()
+from main import main
 
 
 if __name__ == "__main__":
