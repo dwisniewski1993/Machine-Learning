@@ -2,21 +2,22 @@ import logging
 import os.path
 import time
 
+import numpy as np
 import tensorflow as tf
 from scipy.spatial import distance
-from tensorflow.keras.callbacks import TensorBoard
-from tensorflow.keras.layers import Dense, CuDNNLSTM
-from tensorflow.keras.models import Sequential
+from tensorflow.python.keras.callbacks import TensorBoard
+from tensorflow.python.keras.layers import Dense, CuDNNLSTM
+from tensorflow.python.keras.models import Sequential
 
 from Models.Utils import SWATDataHandler, Preprocessing
 from Models.exeptions import DataNotEqual, InvalidShapes
 
 
 class LSTMModel:
-    def __init__(self, healthy_data, broken_data, dataset_name, timesteps):
+    def __init__(self, healthy_data: str, broken_data: str, dataset_name: str, timesteps: int) -> None:
         """
-        AutoEncoder LSTM Artifical Neural Network for anomaly detection.
-        Init the dataset, dataset shapes and preprocessing.
+        AutoEncoder LSTM Artificial Neural Network for anomaly detection.
+        Init the dataset, dataset shapes and pre-processing.
 
         :param healthy_data: healthy data csv location
         :param broken_data: data with anomalies csv location
@@ -26,15 +27,15 @@ class LSTMModel:
         logging.basicConfig(level=logging.INFO)
         self.data_name = dataset_name
         self.logger = logging.getLogger(__name__)
-        handler = SWATDataHandler(healthy_data, broken_data)
+        handler = SWATDataHandler(file_normal=healthy_data, file_brocken=broken_data)
 
         self.normal_data = handler.get_dataset_normal()
         self.attk_data = handler.get_dataset_broken()
         self.Y = handler.get_broken_labels()
 
         scaler = Preprocessing()
-        self.normal_data = scaler.scaleData(self.normal_data)
-        self.attk_data = scaler.scaleData(self.attk_data)
+        self.normal_data = scaler.scaleData(data=self.normal_data)
+        self.attk_data = scaler.scaleData(data=self.attk_data)
 
         normal_samples = len(self.normal_data)
         normal_dim = len(self.normal_data[0])
@@ -42,14 +43,14 @@ class LSTMModel:
         try:
             self.normal_data.shape = (int(normal_samples / self.timesteps), self.timesteps, normal_dim)
         except InvalidShapes:
-            raise InvalidShapes("Something wrong with datset shapes -_-")
+            raise InvalidShapes("Something wrong with dataset shapes -_-")
 
         attk_samples = len(self.attk_data)
         attk_dim = len(self.attk_data[0])
         try:
             self.attk_data.shape = (int(attk_samples / self.timesteps), self.timesteps, attk_dim)
         except InvalidShapes:
-            raise InvalidShapes("Something wrong with datset shapes -_-")
+            raise InvalidShapes("Something wrong with dataset shapes -_-")
 
         self.logger.info('Initializing LSTM model...')
 
@@ -60,7 +61,7 @@ class LSTMModel:
         NAME = "LSTM-{}-{}".format(dataset_name, int(time.time()))
         self.tb = TensorBoard(log_dir='logs/{}'.format(NAME))
 
-    def define_model(self):
+    def define_model(self) -> Sequential:
         """
         Defining the specify LSTM architecteure: activation, number of layers, optimizer and error measure.
         :return: Keras Sequential Model
@@ -84,7 +85,7 @@ class LSTMModel:
         model.summary()
         return model
 
-    def train(self, retrain=False):
+    def train(self, retrain: bool = False) -> None:
         """
 
         :param retrain: Optional param, default False, if true network will train model even if one already exist.
@@ -109,7 +110,7 @@ class LSTMModel:
             self.logger.info('Training LSTM done!')
         self.stats(data=data)
 
-    def score(self, data):
+    def score(self, data: np.array) -> np.array:
         """
 
         :param data: Data for prediction
@@ -122,7 +123,7 @@ class LSTMModel:
         self.logger.info('Calculate LSTM Score complete')
         return yhat
 
-    def save_model(self):
+    def save_model(self) -> None:
         """
         Save trained model to file
         :return: None
@@ -130,7 +131,7 @@ class LSTMModel:
         self.logger.info('Saving LSTM model...')
         self.model.save(self.data_name + '__LSTM_model')
 
-    def load_model(self):
+    def load_model(self) -> None:
         """
         Load model from file
         :return: None
@@ -138,21 +139,21 @@ class LSTMModel:
         self.logger.info('Load LSTM model...')
         self.model = tf.keras.models.load_model(self.data_name + '__LSTM_model')
 
-    def get_normal_data(self):
+    def get_normal_data(self) -> np.array:
         """
         Give healthy data, training one
         :return: Healthy data
         """
         return self.normal_data
 
-    def get_attk_data(self):
+    def get_attk_data(self) -> np.array:
         """
         Give broken data with anomalie to detect
         :return: Broken data
         """
         return self.attk_data
 
-    def stats(self, data):
+    def stats(self, data: np.array) -> None:
         """
 
         :param data: Data to validate the trained models
@@ -161,7 +162,7 @@ class LSTMModel:
         val_loss = self.model.evaluate(data, data, batch_size=72, verbose=0)
         self.logger.info('Validation LSTM Loss: ' + str(val_loss))
 
-    def calculate_threshold(self, helth):
+    def calculate_threshold(self, helth: np.array):
         """
         Calculate and set threshold for anomaly detection
         :param helth: Health matrix value from predict
@@ -184,11 +185,11 @@ class LSTMModel:
         else:
             raise DataNotEqual("Both sets should have the same number of samples")
 
-    def anomaly_score(self, pred):
+    def anomaly_score(self, pred: np.array):
         """
         Anomaly detector, basing on calculated distance and threshold deciding if data is normal or with anomaly.
         :param pred: Matrix values from predicted anomaly set
-        :return: None, saving files with pointed anomalys and real ones per calculated distance.
+        :return: None, saving files with pointed anomaly and real ones per calculated distance.
         """
         self.logger.info('Calculating distance to anomaly...')
         dists = []
@@ -199,7 +200,7 @@ class LSTMModel:
                 pred[i] = pred[i].tolist()
                 actual[i] = actual[i].tolist()
                 dist = distance.euclidean(pred[i], actual[i])
-                if dist >= (1.0 + self.threshold):
+                if dist >= (2.0 + self.threshold):
                     score = 'Anomaly'
                 else:
                     score = 'Normal'
