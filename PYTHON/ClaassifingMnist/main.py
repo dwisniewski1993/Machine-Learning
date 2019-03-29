@@ -4,7 +4,7 @@ from NN.FeedForwardNeuralNetworkClassifier import FFNeuralNetwork
 from NN.RecurentNeuralNetworkClassfier import RecurentNeuralNetwork
 
 
-def main():
+def main() -> None:
     """
     Main function. Run 3 neural networks for classification task.
     Classifing MNIST dataset

@@ -11,7 +11,8 @@ class ConvNeuralNetwork:
     """
     Convolutional Neural Network Classification
     """
-    def __init__(self):
+
+    def __init__(self) -> None:
         """
         Convolutional Neural Network Constructor
         After loading and preparing data, build neural network model
@@ -60,7 +61,7 @@ class ConvNeuralNetwork:
 
         self.val_loss, self.val_acc = self.model.evaluate(self.X_test, self.Y_test)
 
-    def normalize_data(self):
+    def normalize_data(self) -> None:
         """
         Normalizing data in dataset
         :return: None
@@ -69,7 +70,7 @@ class ConvNeuralNetwork:
         self.X_train = tf.keras.utils.normalize(self.X_train, axis=1)
         self.X_test = tf.keras.utils.normalize(self.X_test, axis=1)
 
-    def train_network(self, epochs):
+    def train_network(self, epochs) -> None:
         """
         Fiting the network with data
         :param epochs: number of training epochs
@@ -78,7 +79,7 @@ class ConvNeuralNetwork:
         self.model.fit(self.X_train, self.Y_train, epochs=epochs, batch_size=64, validation_data=(self.X_test,
                                                                                                   self.Y_test))
 
-    def save_model(self):
+    def save_model(self) -> None:
         """
         Saving the trained model
         :return:
@@ -86,7 +87,7 @@ class ConvNeuralNetwork:
         log.info('Training model...')
         self.model.save('mnistnet_CNN')
 
-    def load_model(self):
+    def load_model(self) -> None:
         """
         Loading trained model
         :return: None
@@ -94,21 +95,21 @@ class ConvNeuralNetwork:
         log.info('Loading trained model')
         self.model = tf.keras.models.load_model('mnistnet_CNN')
 
-    def get_val_loss(self):
+    def get_val_loss(self) -> float:
         """
         Get validation loss
         :return: Validation loss value
         """
         return self.val_loss
 
-    def get_val_acc(self):
+    def get_val_acc(self) -> float:
         """
         Get validation accuracy
         :return: Validation accuracy value
         """
         return self.val_acc
 
-    def get_prediction(self, data, id):
+    def get_prediction(self, data: np.array, id: int) -> np.array:
         """
         Predict the given image
         :param data: array of images
