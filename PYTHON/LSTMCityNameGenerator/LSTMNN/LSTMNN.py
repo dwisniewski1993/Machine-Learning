@@ -8,7 +8,8 @@ class LSTMNN:
     """
     LSTM Neural Network generate city name
     """
-    def __init__(self, path):
+
+    def __init__(self, path: str) -> None:
         """
         City name generator constructor for loading and preparing data
         :param path: path to file with city names
@@ -24,7 +25,7 @@ class LSTMNN:
         self.generator = self.build_model(self.max_lenght, self.char_idx)
 
     @staticmethod
-    def build_model(maxlen, char_idx):
+    def build_model(maxlen: int, char_idx: dict) -> tflearn.models.generator.SequenceGenerator:
         """
         Building LSTM Neural Network Model
         :param maxlen: maximum length of char
@@ -47,7 +48,7 @@ class LSTMNN:
                                               checkpoint_path='model_us_cities')
         return genarator
 
-    def train(self, num_epochs, temperature=1.2, num_characters=10):
+    def train(self, num_epochs: int, temperature: float = 1.2, num_characters: int = 10) -> None:
         """
         Train iterable on batch, after each test with generated score for each tamperature
         :param num_epochs: number of training intervals
@@ -64,7 +65,7 @@ class LSTMNN:
             log.info(self.generator.generate(num_characters, temperature=temperature, seq_seed=self.seed)
                      .encode('utf-8'))
 
-    def output(self, temperature=1.2, num_characters=10):
+    def output(self, temperature: float = 1.2, num_characters: int = 10) -> str:
         """
         Generate final score for given parameters
         :param temperature: network temperature parameter
