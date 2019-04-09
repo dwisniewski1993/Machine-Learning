@@ -1,7 +1,8 @@
-from Models.Conv1D.Conv2DModel import Conv2DModel
+from Models.Conv2D.Conv2DModel import Conv2DModel
 from Models.FeedForward.FeedForwardModel import FFModel
 from Models.GRU.GRUModel import GRUModel
 from Models.LSTM.LSTMModel import LSTMModel
+from Models.OneClassSVM.OneClassSVMModel import OneClassSVMModel
 from Models.Utils import Results
 
 
@@ -12,8 +13,8 @@ def main():
     validation set: SWAT broken data
     :return: None
     """
-    swat_normal_file = r'Datasets/SWAT/data_normal_small.csv'
-    swat_attk_file = r'Datasets/SWAT/data_attk_small.csv'
+    swat_normal_file = r'Datasets/SWAT/data_normal.csv'
+    swat_attk_file = r'Datasets/SWAT/data_attk.csv'
 
     # LSTM Autoencoder
     lstm = LSTMModel(healthy_data=swat_normal_file, broken_data=swat_attk_file, dataset_name='SWAT', timesteps=10)
@@ -46,6 +47,11 @@ def main():
     yhat_broken = gru.score(data=gru.get_attk_data())
     gru.calculate_threshold(helth=yhat_healthy)
     gru.anomaly_score(pred=yhat_broken)
+
+    # One Class SVM
+    svm = OneClassSVMModel(healthy_data=swat_normal_file, broken_data=swat_attk_file, dataset_name='SWAT', timesteps=10)
+    svm.train()
+    svm.score()
 
     # Anomaly detection / Outliers detection results
     Results()
