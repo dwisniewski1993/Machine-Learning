@@ -9,7 +9,7 @@ from Models.Utils import SWATDataHandler, Preprocessing
 
 
 class OneClassSVMModel:
-    def __init__(self, healthy_data: str, broken_data: str, dataset_name: str, timesteps: int) -> None:
+    def __init__(self, healthy_data: str, broken_data: str, dataset_name: str) -> None:
         logging.basicConfig(level=logging.INFO)
         self.data_name = dataset_name
         self.logger = logging.getLogger(__name__)

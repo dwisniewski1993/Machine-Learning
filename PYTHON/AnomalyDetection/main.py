@@ -1,5 +1,6 @@
 from Models.Conv2D.Conv2DModel import Conv2DModel
 from Models.FeedForward.FeedForwardModel import FFModel
+from Models.FuzzyLogic.FuzzyModel import FuzzyModel
 from Models.GRU.GRUModel import GRUModel
 from Models.LSTM.LSTMModel import LSTMModel
 from Models.OneClassSVM.OneClassSVMModel import OneClassSVMModel
@@ -49,9 +50,17 @@ def main():
     gru.anomaly_score(pred=yhat_broken)
 
     # One Class SVM
-    svm = OneClassSVMModel(healthy_data=swat_normal_file, broken_data=swat_attk_file, dataset_name='SWAT', timesteps=10)
+    svm = OneClassSVMModel(healthy_data=swat_normal_file, broken_data=swat_attk_file, dataset_name='SWAT')
     svm.train()
     svm.score()
+
+    # Fuzzy Time Series
+    fst = FuzzyModel(healthy_data=swat_normal_file, broken_data=swat_attk_file, dataset_name='SWAT')
+    fst.train()
+    yhat_healthy = fst.score(data=fst.get_normal_data())
+    yhat_broken = fst.score(data=fst.get_attk_data())
+    fst.calculate_threshold(helth=yhat_healthy)
+    fst.anomaly_score(pred=yhat_broken)
 
     # Anomaly detection / Outliers detection results
     Results()
