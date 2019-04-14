@@ -1,16 +1,17 @@
-from Models.Conv2D.Conv2DModel import Conv2DModel
-from Models.FeedForward.FeedForwardModel import FFModel
-from Models.FuzzyLogic.FuzzyModel import FuzzyModel
-from Models.GRU.GRUModel import GRUModel
-from Models.LSTM.LSTMModel import LSTMModel
-from Models.OneClassSVM.OneClassSVMModel import OneClassSVMModel
+from Models.Conv2DModel import Conv2DModel
+from Models.FeedForwardModel import FFModel
+from Models.FuzzyModel import FuzzyModel
+from Models.GRUModel import GRUModel
+from Models.IsolationForrestModel import IsolationForrestModel
+from Models.LSTMModel import LSTMModel
+from Models.OneClassSVMModel import OneClassSVMModel
 from Models.Utils import Results
 
 
 def main():
     """
     Main function. Anomaly/Outliers detection with neural networks architectures.
-    train set: SWAT health data
+    train set: SWAT health data 
     validation set: SWAT broken data
     :return: None
     """
@@ -53,6 +54,11 @@ def main():
     svm = OneClassSVMModel(healthy_data=swat_normal_file, broken_data=swat_attk_file, dataset_name='SWAT')
     svm.train()
     svm.score()
+
+    # Isolation Forrest
+    iso = IsolationForrestModel(healthy_data=swat_normal_file, broken_data=swat_attk_file, dataset_name='SWAT')
+    iso.train()
+    iso.score()
 
     # Fuzzy Time Series
     fst = FuzzyModel(healthy_data=swat_normal_file, broken_data=swat_attk_file, dataset_name='SWAT')
