@@ -12,7 +12,7 @@ from tensorflow.python.keras.models import Model
 
 
 class RecommendationSystem:
-    def __init__(self, dataset_path) -> None:
+    def __init__(self, dataset_path: str) -> None:
         log.getLogger().setLevel(log.INFO)
         log.info('Build Recommendation System')
         df = pd.read_csv(dataset_path)
@@ -35,7 +35,7 @@ class RecommendationSystem:
         return dict([(y, x + 1) for x, y in enumerate(series.unique())])
 
     @staticmethod
-    def train_test_split(df: pd.DataFrame, percent: int):
+    def train_test_split(df: pd.DataFrame, percent: int) -> tuple:
         percentile = np.percentile(df.timestamp, percent)
         cols = list(df)
         train_data = df[df.timestamp < percentile][cols]
@@ -43,7 +43,7 @@ class RecommendationSystem:
         return train_data, test_data
 
     @staticmethod
-    def build_model(max_movie, max_user):
+    def build_model(max_movie: int, max_user: int) -> Model:
         log.info('Start building neural network model...')
         dim_embedddings = 30
         bias = 1
@@ -68,15 +68,15 @@ class RecommendationSystem:
         model.compile(loss='mae', optimizer='adam', metrics=["mae"])
         return model
 
-    def save_model(self, path):
+    def save_model(self, path: str) -> None:
         log.info('Saving model...')
         self.model.save(path)
 
-    def load_model(self, path):
+    def load_model(self, path: str) -> None:
         log.info('Load model...')
         self.model = tf.keras.models.load_model(path)
 
-    def train_model(self):
+    def train_model(self) -> None:
         path = 'Recommendation__Model'
         if os.path.exists(path):
             log.info('Model detected')
@@ -88,7 +88,7 @@ class RecommendationSystem:
             self.save_model(path)
         log.info('Model training complete!')
 
-    def model_evaluation(self):
+    def model_evaluation(self) -> None:
         log.info('Start ML model evaluation')
         predictions = self.model.predict([self.test.movieId.values, self.test.userId.values])
         score = mean_absolute_error(self.test.rating.values, predictions)
