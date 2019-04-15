@@ -1,16 +1,12 @@
-from RecSys.Sys import RecSystem
+from RecSys.Sys import RecommendationSystem
 
 
 def main():
-    print("Recommendation System")
+    dataset_location = r'ml-latest-small/ratings.csv'
 
-    datasetLocation = r'ml-latest-small/ratings.csv'
-
-    rc = RecSystem(datasetloc=datasetLocation)
-    rc.train_network()
-    scores = rc.give_first_ten_pred()
-
-    print(scores)
+    rc = RecommendationSystem(dataset_path=dataset_location)
+    rc.train_model()
+    rc.model_evaluation()
 
 
 if __name__ == '__main__':

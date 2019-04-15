@@ -1,77 +1,95 @@
-import pandas as pd
+import logging as log
+import os
+import time
+
 import numpy as np
-from keras import Input, Model
-from keras.layers import Embedding, merge, Flatten, Dropout, Dense
-from keras.optimizers import Adam
-from keras.regularizers import l2
+import pandas as pd
+import tensorflow as tf
+from sklearn.metrics import mean_absolute_error
+from tensorflow.python.keras.callbacks import TensorBoard
+from tensorflow.python.keras.layers import Input, Embedding, multiply, Dropout, Dense, Flatten, concatenate
+from tensorflow.python.keras.models import Model
 
 
-class RecSystem:
-    def __init__(self, datasetloc):
-        self.ratings = pd.read_csv(datasetloc)
+class RecommendationSystem:
+    def __init__(self, dataset_path) -> None:
+        log.getLogger().setLevel(log.INFO)
+        log.info('Build Recommendation System')
+        df = pd.read_csv(dataset_path)
 
-        users = self.ratings.userId.unique()
-        movies = self.ratings.movieId.unique()
+        self.mapped_ids = self.map_data(df.movieId)
+        df.movieId = df.movieId.map(self.mapped_ids)
 
-        userid2idx = {o: i for i, o in enumerate(users)}
-        movieid2idx = {o: i for i, o in enumerate(movies)}
+        mapped_users = self.map_data(df.userId)
+        df.userId = df.userId.map(mapped_users)
 
-        self.ratings.userId = self.ratings.userId.apply(lambda x: userid2idx[x])
-        self.ratings.movieId = self.ratings.movieId.apply(lambda x: movieid2idx[x])
+        self.train, self.test = self.train_test_split(df=df, percent=80)
+        self.max_user_id = max(df.userId.tolist())
+        self.max_movie_id = max(df.movieId.tolist())
 
-        np.random.seed = 42
-
-        msk = np.random.rand(len(self.ratings)) < 0.8
-        self.trn = self.ratings[msk]
-        self.val = self.ratings[~msk]
-
-        g = self.ratings.groupby('userId')['rating'].count()
-        self.topUsers = g.sort_values(ascending=False)[:15]
-
-        g = self.ratings.groupby('movieId')['rating'].count()
-        self.topMovies = g.sort_values(ascending=False)[:15]
-
-        top_r = self.ratings.join(self.topUsers, rsuffix='_r', how='inner', on='userId')
-        top_r = top_r.join(self.topMovies, rsuffix='_r', how='inner', on='movieId')
-        self.dataset = pd.crosstab(top_r.userId, top_r.movieId, top_r.rating, aggfunc=np.sum)
-
-        n_users = self.ratings.userId.nunique()
-        n_movies = self.ratings.movieId.nunique()
-        n_factors = 50
-
-        self.user_in, self.u = self.embedding_input('user_in', n_users, n_factors, 1e-4)
-        self.movie_in, self.m = self.embedding_input('movie_in', n_movies, n_factors, 1e-4)
-
-        self.model = self.build_network()
-
-    def show_dataset(self):
-        print(self.dataset)
+        self.model = self.build_model(self.max_movie_id, self.max_user_id)
+        self.tb = TensorBoard(log_dir=f"logs/Recomender-{int(time.time())}")
 
     @staticmethod
-    def embedding_input(name, n_in, n_out, reg):
-        inp = Input(shape=(1,), dtype='int64', name=name)
-        return inp, Embedding(n_in, n_out, input_length=1, W_regularizer=l2(reg))(inp)
+    def map_data(series: pd.Series) -> dict:
+        return dict([(y, x + 1) for x, y in enumerate(series.unique())])
 
-    def build_network(self):
-        net = merge([self.u, self.m], mode='concat')
-        net = Flatten()(net)
-        net = Dropout(0.3)(net)
-        net = Dense(70, activation='relu')(net)
-        net = Dropout(0.75)(net)
-        net = Dense(1)(net)
+    @staticmethod
+    def train_test_split(df: pd.DataFrame, percent: int):
+        percentile = np.percentile(df.timestamp, percent)
+        cols = list(df)
+        train_data = df[df.timestamp < percentile][cols]
+        test_data = df[df.timestamp > percentile][cols]
+        return train_data, test_data
 
-        nn = Model([self.user_in, self.movie_in], net)
-        nn.compile(Adam(0.001), loss='mse')
+    @staticmethod
+    def build_model(max_movie, max_user):
+        log.info('Start building neural network model...')
+        dim_embedddings = 30
+        bias = 1
 
-        return nn
+        movie_inputs = Input(shape=(1,), dtype='int32')
+        movie = Embedding(max_movie + 1, dim_embedddings, name="movie")(movie_inputs)
+        movie_bias = Embedding(max_movie + 1, bias, name="movie_bias")(movie_inputs)
 
-    def train_network(self):
-        self.model.fit([self.trn.userId, self.trn.movieId], self.trn.rating, batch_size=64, nb_epoch=1,
-                       validation_data=([self.val.userId, self.val.movieId], self.val.rating))
+        user_inputs = Input(shape=(1,), dtype='int32')
+        user = Embedding(max_user + 1, dim_embedddings, name="user")(user_inputs)
+        user_bias = Embedding(max_user + 1, bias, name="user_bias")(user_inputs)
 
-    def output(self, user_id, movie_id):
-        return self.model.predict([user_id, movie_id])
+        network = multiply([movie, user])
+        network = Dropout(0.3)(network)
+        network = concatenate([network, user_bias, movie_bias])
+        network = Flatten()(network)
+        network = Dense(10, activation="relu")(network)
+        network = Dense(1)(network)
 
-    def give_first_ten_pred(self):
-        predicted_scores = self.model.predict([self.trn.userId, self.trn.movieId])
-        return predicted_scores[:10]
+        model = Model(inputs=[movie_inputs, user_inputs], outputs=network)
+        model.summary()
+        model.compile(loss='mae', optimizer='adam', metrics=["mae"])
+        return model
+
+    def save_model(self, path):
+        log.info('Saving model...')
+        self.model.save(path)
+
+    def load_model(self, path):
+        log.info('Load model...')
+        self.model = tf.keras.models.load_model(path)
+
+    def train_model(self):
+        path = 'Recommendation__Model'
+        if os.path.exists(path):
+            log.info('Model detected')
+            self.load_model(path)
+        else:
+            log.info('Start training model')
+            self.model.fit([self.train.movieId.values, self.train.userId.values], self.train.rating.values, nb_epoch=10,
+                           verbose=0, validation_split=0.2, callbacks=[self.tb])
+            self.save_model(path)
+        log.info('Model training complete!')
+
+    def model_evaluation(self):
+        log.info('Start ML model evaluation')
+        predictions = self.model.predict([self.test.movieId.values, self.test.userId.values])
+        score = mean_absolute_error(self.test.rating.values, predictions)
+        log.info(f"Mean Absolute Error for trained model: {score}")
