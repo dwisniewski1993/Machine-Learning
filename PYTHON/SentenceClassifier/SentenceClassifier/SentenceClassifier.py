@@ -1,13 +1,14 @@
 import logging as log
-from nltk.tokenize import word_tokenize
-import numpy as np
 import random
 from collections import Counter
+from statistics import mean
+
+import numpy as np
 from nltk.stem import WordNetLemmatizer
+from nltk.tokenize import word_tokenize
+from tensorflow.python.keras import activations
 from tensorflow.python.keras.layers import Dense
 from tensorflow.python.keras.models import Sequential
-from tensorflow.python.keras import activations
-from statistics import mean, median
 
 
 class Sentencer:
@@ -86,7 +87,7 @@ class Sentencer:
 
     @staticmethod
     def define_feedforward_dnn_model(hidden_layer_number: int = 1, hidden_units_number: int = 512) -> Sequential:
-        log.info(f"Building model with {hidden_layer_number} hidden layers with {hidden_layer_number} neurons in each")
+        log.info(f"Building model with {hidden_layer_number} hidden layers with {hidden_units_number} neurons in each")
         model = Sequential()
         for i in range(hidden_layer_number):
             model.add(Dense(hidden_units_number, activation=activations.relu))
