@@ -14,7 +14,7 @@ class RecurentNeuralNetwork:
 
     def __init__(self) -> None:
         """
-        Convolutional Neural Network Constructor
+        Recurrent Neural Network Constructor
         After loading and preparing data, build neural network model
         """
         log.getLogger().setLevel(log.INFO)
