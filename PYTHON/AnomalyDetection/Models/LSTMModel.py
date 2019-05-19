@@ -184,7 +184,7 @@ class LSTMModel:
             summary = 0
             for each in dists:
                 summary = summary + each
-            self.threshold = summary / len(dists)
+            self.threshold = max(dists)
             self.logger.info('Threshold calculated LSTM: {}'.format(self.threshold))
         else:
             raise DataNotEqual("Both sets should have the same number of samples")
@@ -204,7 +204,7 @@ class LSTMModel:
                 pred[i] = pred[i].tolist()
                 actual[i] = actual[i].tolist()
                 dist = distance.euclidean(pred[i], actual[i])
-                if dist >= (2.0 + self.threshold):
+                if dist > self.threshold:
                     score = 'Anomaly'
                 else:
                     score = 'Normal'
