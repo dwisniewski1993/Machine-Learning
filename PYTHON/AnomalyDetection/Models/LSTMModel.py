@@ -6,7 +6,7 @@ import numpy as np
 import tensorflow as tf
 from scipy.spatial import distance
 from tensorflow.python.keras.callbacks import TensorBoard
-from tensorflow.python.keras.layers import Dense, CuDNNLSTM
+from tensorflow.python.keras.layers import Dense, CuDNNLSTM, LSTM
 from tensorflow.python.keras.models import Sequential
 
 from Models.Utils import SWATDataHandler, Preprocessing
@@ -66,18 +66,22 @@ class LSTMModel:
         Defining the specify LSTM architecteure: activation, number of layers, optimizer and error measure.
         :return: Keras Sequential Model
         """
+        if tf.test.is_gpu_available(cuda_only=True):
+            rnn_cell = CuDNNLSTM
+        else:
+            rnn_cell = LSTM
         model = Sequential()
-        model.add(CuDNNLSTM(100, input_shape=(self.timesteps, self.dim), return_sequences=True))
-        model.add(CuDNNLSTM(100, input_shape=(self.timesteps, self.dim), return_sequences=True))
-        model.add(CuDNNLSTM(100, input_shape=(self.timesteps, self.dim), return_sequences=True))
-        model.add(CuDNNLSTM(100, input_shape=(self.timesteps, self.dim), return_sequences=True))
-        model.add(CuDNNLSTM(100, input_shape=(self.timesteps, self.dim), return_sequences=True))
-        model.add(CuDNNLSTM(100, input_shape=(self.timesteps, self.dim), return_sequences=True))
-        model.add(CuDNNLSTM(100, input_shape=(self.timesteps, self.dim), return_sequences=True))
-        model.add(CuDNNLSTM(100, input_shape=(self.timesteps, self.dim), return_sequences=True))
-        model.add(CuDNNLSTM(100, input_shape=(self.timesteps, self.dim), return_sequences=True))
-        model.add(CuDNNLSTM(100, input_shape=(self.timesteps, self.dim), return_sequences=True))
-        model.add(CuDNNLSTM(100, input_shape=(self.timesteps, self.dim), return_sequences=True))
+        model.add(rnn_cell(100, input_shape=(self.timesteps, self.dim), return_sequences=True))
+        model.add(rnn_cell(100, input_shape=(self.timesteps, self.dim), return_sequences=True))
+        model.add(rnn_cell(100, input_shape=(self.timesteps, self.dim), return_sequences=True))
+        model.add(rnn_cell(100, input_shape=(self.timesteps, self.dim), return_sequences=True))
+        model.add(rnn_cell(100, input_shape=(self.timesteps, self.dim), return_sequences=True))
+        model.add(rnn_cell(100, input_shape=(self.timesteps, self.dim), return_sequences=True))
+        model.add(rnn_cell(100, input_shape=(self.timesteps, self.dim), return_sequences=True))
+        model.add(rnn_cell(100, input_shape=(self.timesteps, self.dim), return_sequences=True))
+        model.add(rnn_cell(100, input_shape=(self.timesteps, self.dim), return_sequences=True))
+        model.add(rnn_cell(100, input_shape=(self.timesteps, self.dim), return_sequences=True))
+        model.add(rnn_cell(100, input_shape=(self.timesteps, self.dim), return_sequences=True))
         model.add(Dense(self.dim))
         model.compile(loss='mae', optimizer='adam')
         self.logger.info('Defining LSTM neural network architecture...')

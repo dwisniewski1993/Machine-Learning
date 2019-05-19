@@ -6,7 +6,7 @@ import numpy as np
 import tensorflow as tf
 from scipy.spatial import distance
 from tensorflow.python.keras.callbacks import TensorBoard
-from tensorflow.python.keras.layers import Dense, CuDNNGRU
+from tensorflow.python.keras.layers import Dense, CuDNNGRU, GRU
 from tensorflow.python.keras.models import Sequential
 
 from Models.Utils import SWATDataHandler, Preprocessing
@@ -66,18 +66,22 @@ class GRUModel:
         Defining the specify GRU architecteure: activation, number of layers, optimizer and error measure.
         :return: Keras Sequential Model
         """
+        if tf.test.is_gpu_available(cuda_only=True):
+            rnn_cell = CuDNNGRU
+        else:
+            rnn_cell = GRU
         model = Sequential()
-        model.add(CuDNNGRU(100, input_shape=(self.timesteps, self.dim), return_sequences=True))
-        model.add(CuDNNGRU(100, input_shape=(self.timesteps, self.dim), return_sequences=True))
-        model.add(CuDNNGRU(100, input_shape=(self.timesteps, self.dim), return_sequences=True))
-        model.add(CuDNNGRU(100, input_shape=(self.timesteps, self.dim), return_sequences=True))
-        model.add(CuDNNGRU(100, input_shape=(self.timesteps, self.dim), return_sequences=True))
-        model.add(CuDNNGRU(100, input_shape=(self.timesteps, self.dim), return_sequences=True))
-        model.add(CuDNNGRU(100, input_shape=(self.timesteps, self.dim), return_sequences=True))
-        model.add(CuDNNGRU(100, input_shape=(self.timesteps, self.dim), return_sequences=True))
-        model.add(CuDNNGRU(100, input_shape=(self.timesteps, self.dim), return_sequences=True))
-        model.add(CuDNNGRU(100, input_shape=(self.timesteps, self.dim), return_sequences=True))
-        model.add(CuDNNGRU(100, input_shape=(self.timesteps, self.dim), return_sequences=True))
+        model.add(rnn_cell(100, input_shape=(self.timesteps, self.dim), return_sequences=True))
+        model.add(rnn_cell(100, input_shape=(self.timesteps, self.dim), return_sequences=True))
+        model.add(rnn_cell(100, input_shape=(self.timesteps, self.dim), return_sequences=True))
+        model.add(rnn_cell(100, input_shape=(self.timesteps, self.dim), return_sequences=True))
+        model.add(rnn_cell(100, input_shape=(self.timesteps, self.dim), return_sequences=True))
+        model.add(rnn_cell(100, input_shape=(self.timesteps, self.dim), return_sequences=True))
+        model.add(rnn_cell(100, input_shape=(self.timesteps, self.dim), return_sequences=True))
+        model.add(rnn_cell(100, input_shape=(self.timesteps, self.dim), return_sequences=True))
+        model.add(rnn_cell(100, input_shape=(self.timesteps, self.dim), return_sequences=True))
+        model.add(rnn_cell(100, input_shape=(self.timesteps, self.dim), return_sequences=True))
+        model.add(rnn_cell(100, input_shape=(self.timesteps, self.dim), return_sequences=True))
         model.add(Dense(self.dim))
         model.compile(loss='mae', optimizer='adam')
         self.logger.info('Defining GRU neural network architecture...')
