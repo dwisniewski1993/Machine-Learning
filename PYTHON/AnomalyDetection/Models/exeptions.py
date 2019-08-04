@@ -1,7 +1,3 @@
-class PythonNullPointerExeption(Exception):
-    pass
-
-
 class DataNotEqual(Exception):
     pass
 

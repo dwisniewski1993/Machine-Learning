@@ -1,72 +1,85 @@
-from Models.Conv2DModel import Conv2DModel
-from Models.FeedForwardModel import FFModel
-from Models.FuzzyModel import FuzzyModel
-from Models.GRUModel import GRUModel
-from Models.IsolationForrestModel import IsolationForrestModel
-from Models.LSTMModel import LSTMModel
-from Models.OneClassSVMModel import OneClassSVMModel
-from Models.Utils import Results
+from Models.Utils import DataHandler, Results
+from Models.DeepLearningModels.LSTM import LSTMModel
+from Models.DeepLearningModels.GRU import GRUModel
+from Models.DeepLearningModels.CONV import CONVModel
+from Models.DeepLearningModels.Forward import FFModel
+from Models.FuzzyLogicModel.Fuzzy import FuzzyModel
+from Models.MachineLearningModels.OneClassSVMM import OneClassSVMModel
+from Models.MachineLearningModels.IsolationForrest import IsolationForrestModel
+from config import WINDOW_SIZE
 
 
 def main():
     """
-    Main function. Anomaly/Outliers detection with neural networks architectures.
+    Main function. Anomaly/Outliers detection with neural networks architectures, fuzzy logic one-class svm and
+    isolation forrest.
     train set: health data 
     validation set: broken data
     :return: None
     """
-    swat_normal_file = r'Datasets/data_normal.csv'
-    swat_attk_file = r'Datasets/data_attk.csv'
+    normal_data = r'Datasets/data_normal_small.csv'
+    anomaly_file = r'Datasets/data_attk_small.csv'
 
-    # LSTM Autoencoder
-    lstm = LSTMModel(healthy_data=swat_normal_file, broken_data=swat_attk_file, dataset_name='Generated', timesteps=10)
+    # Load and get data
+    data_handler = DataHandler(file_normal=normal_data, file_broken=anomaly_file)
+    health_data = data_handler.get_dataset_normal()
+    anomaly_data = data_handler.get_dataset_broken()
+    labels = data_handler.get_broken_labels()
+
+    # LSTM Auto-Encoder
+    lstm = LSTMModel(healthy_data=health_data, broken_data=anomaly_data, dataset_name='Generated', data_labels=labels,
+                     windows_size=WINDOW_SIZE)
     lstm.train()
     yhat_healthy = lstm.score(data=lstm.get_normal_data())
-    yhat_broken = lstm.score(data=lstm.get_attk_data())
+    yhat_broken = lstm.score(data=lstm.get_anomaly_data())
     lstm.calculate_threshold(helth=yhat_healthy)
     lstm.anomaly_score(pred=yhat_broken)
 
-    # Conv2D Autoencoder
-    con = Conv2DModel(healthy_data=swat_normal_file, broken_data=swat_attk_file, dataset_name='Generated', timesteps=10)
-    con.train()
-    yhat_healthy = con.score(data=con.get_normal_data())
-    yhat_broken = con.score(data=con.get_attk_data())
-    con.calculate_threshold(helth=yhat_healthy)
-    con.anomaly_score(pred=yhat_broken)
-
-    # FeedForward Autoencoder
-    ff = FFModel(healthy_data=swat_normal_file, broken_data=swat_attk_file, dataset_name='Generated', timesteps=10)
-    ff.train()
-    yhat_healthy = ff.score(data=ff.get_normal_data())
-    yhat_broken = ff.score(data=ff.get_attk_data())
-    ff.calculate_threshold(helth=yhat_healthy)
-    ff.anomaly_score(pred=yhat_broken)
-
-    # GRU Autoencoder
-    gru = GRUModel(healthy_data=swat_normal_file, broken_data=swat_attk_file, dataset_name='Generated', timesteps=10)
+    # GRU Auto-Encoder
+    gru = GRUModel(healthy_data=health_data, broken_data=anomaly_data, dataset_name='Generated', data_labels=labels,
+                   windows_size=WINDOW_SIZE)
     gru.train()
     yhat_healthy = gru.score(data=gru.get_normal_data())
-    yhat_broken = gru.score(data=gru.get_attk_data())
+    yhat_broken = gru.score(data=gru.get_anomaly_data())
     gru.calculate_threshold(helth=yhat_healthy)
     gru.anomaly_score(pred=yhat_broken)
 
-    # One Class SVM
-    svm = OneClassSVMModel(healthy_data=swat_normal_file, broken_data=swat_attk_file, dataset_name='Generated')
-    svm.train()
-    svm.score()
+    # Convolutional Auto-Encoder
+    conv = CONVModel(healthy_data=health_data, broken_data=anomaly_data, dataset_name='Generated', data_labels=labels,
+                     windows_size=WINDOW_SIZE)
+    conv.train()
+    yhat_healthy = conv.score(data=conv.get_normal_data())
+    yhat_broken = conv.score(data=conv.get_anomaly_data())
+    conv.calculate_threshold(helth=yhat_healthy)
+    conv.anomaly_score(pred=yhat_broken)
 
-    # Isolation Forrest
-    iso = IsolationForrestModel(healthy_data=swat_normal_file, broken_data=swat_attk_file, dataset_name='Generated')
-    iso.train()
-    iso.score()
+    # Feed Forward Auto-Encoder
+    forward = FFModel(healthy_data=health_data, broken_data=anomaly_data, dataset_name='Generated', data_labels=labels,
+                      windows_size=WINDOW_SIZE)
+    forward.train()
+    yhat_healthy = forward.score(data=forward.get_normal_data())
+    yhat_broken = forward.score(data=forward.get_anomaly_data())
+    forward.calculate_threshold(helth=yhat_healthy)
+    forward.anomaly_score(pred=yhat_broken)
 
     # Fuzzy Time Series
-    fst = FuzzyModel(healthy_data=swat_normal_file, broken_data=swat_attk_file, dataset_name='Generated')
-    fst.train()
-    yhat_healthy = fst.score(data=fst.get_normal_data())
-    yhat_broken = fst.score(data=fst.get_attk_data())
-    fst.calculate_threshold(helth=yhat_healthy)
-    fst.anomaly_score(pred=yhat_broken)
+    fts = FuzzyModel(healthy_data=health_data, broken_data=anomaly_data, dataset_name='Generated', data_labels=labels)
+    fts.train()
+    yhat_healthy = fts.score(data=fts.get_normal_data())
+    yhat_broken = fts.score(data=fts.get_anomaly_data())
+    fts.calculate_threshold(helth=yhat_healthy)
+    fts.anomaly_score(pred=yhat_broken)
 
-    # Anomaly detection / Outliers detection results
+    # One Class SVM
+    svm = OneClassSVMModel(healthy_data=health_data, broken_data=anomaly_data, dataset_name='Generated',
+                           data_labels=labels)
+    svm.train()
+    svm.score(svm.anomaly_data)
+
+    # Isolation Forrest
+    iso = IsolationForrestModel(healthy_data=health_data, broken_data=anomaly_data, dataset_name='Generated',
+                                data_labels=labels)
+    iso.train()
+    iso.score(iso.anomaly_data)
+
     Results()
