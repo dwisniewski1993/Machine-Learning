@@ -6,12 +6,12 @@ import weka.core.converters.CSVLoader;
 
 import java.io.File;
 
-public class DataHandler {
+class DataHandler {
     private static final Logger log = LoggerFactory.getLogger(DataHandler.class);
     private String csvPath;
     private String arffPath;
 
-    public DataHandler(String csvFilePath, String arffFilePAth){
+    DataHandler(String csvFilePath, String arffFilePAth){
         this.csvPath = csvFilePath;
         this.arffPath = arffFilePAth;
         try {
@@ -21,7 +21,7 @@ public class DataHandler {
         }
     }
 
-    public void CsvToArff() throws Exception {
+    void CsvToArff() throws Exception {
         log.info("Start converting file");
 
         // load the CSV file

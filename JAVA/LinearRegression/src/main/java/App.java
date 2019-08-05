@@ -41,13 +41,7 @@ public class App {
         LinearRegressionModel clf = new LinearRegressionModel(arffFile, 0);
         clf.loadDataset();
         clf.buildModel();
-        clf.predictAndEvaluate();
-
-        //double predictedCost = clf.predict();
-        //double actualCost = clf.getActual();
-
-        //System.out.println("Predicted cost: " + predictedCost);
-        //System.out.println("Actual cost: " + actualCost);
+        clf.output();
 
     }
 }
