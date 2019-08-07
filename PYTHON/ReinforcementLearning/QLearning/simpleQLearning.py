@@ -127,5 +127,5 @@ class SimpleQLearning:
             discrete_state = new_discrete_state
         log.info(f"Played reward: {played_reward}")
 
-    def close_enviroment(self) -> None:
+    def close_environment(self) -> None:
         self.env.close()
