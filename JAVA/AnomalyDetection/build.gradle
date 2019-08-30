@@ -1,0 +1,23 @@
+plugins {
+    id 'java'
+}
+
+group 'domwis'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile group: 'org.slf4j', name:'slf4j-api', version: '1.7.2'
+    compile group: 'org.deeplearning4j', name: 'deeplearning4j-core', version: '0.9.1'
+    compile group: 'org.nd4j', name: 'nd4j-native-platform', version: '0.9.1'
+    compile group: 'ch.qos.logback', name:'logback-classic', version: '1.0.9'
+    compile group: 'ch.qos.logback', name:'logback-core', version: '1.0.9'
+
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+
+}
