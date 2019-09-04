@@ -2,7 +2,9 @@ package Models;
 
 import org.nd4j.linalg.dataset.api.iterator.DataSetIterator;
 
+import java.io.IOException;
+
 public interface AbstractModelInterface {
-    public void train();
-    public void score(DataSetIterator dataSetIterator);
+    void train() throws IOException;
+    void score(DataSetIterator dataSetIterator);
 }

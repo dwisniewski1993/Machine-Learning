@@ -13,8 +13,8 @@ repositories {
 
 dependencies {
     compile group: 'org.slf4j', name:'slf4j-api', version: '1.7.2'
-    compile group: 'org.deeplearning4j', name: 'deeplearning4j-core', version: '0.9.1'
-    compile group: 'org.nd4j', name: 'nd4j-native-platform', version: '0.9.1'
+    compile group: 'org.deeplearning4j', name: 'deeplearning4j-core', version: '1.0.0-beta4'
+    compile group: 'org.nd4j', name: 'nd4j-native-platform', version: '1.0.0-beta4'
     compile group: 'ch.qos.logback', name:'logback-classic', version: '1.0.9'
     compile group: 'ch.qos.logback', name:'logback-core', version: '1.0.9'
 

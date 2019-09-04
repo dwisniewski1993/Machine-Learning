@@ -30,11 +30,6 @@ public class AnomalyDetectionDataIterator implements DataSetIterator {
     }
 
     @Override
-    public int totalExamples() {
-        return recordReader.totalExamples();
-    }
-
-    @Override
     public int inputColumns() {
         if (last == null){
             DataSet next = next();
@@ -80,16 +75,6 @@ public class AnomalyDetectionDataIterator implements DataSetIterator {
     @Override
     public int batch() {
         return batchSize;
-    }
-
-    @Override
-    public int cursor() {
-        return 0;
-    }
-
-    @Override
-    public int numExamples() {
-        return 0;
     }
 
     @Override

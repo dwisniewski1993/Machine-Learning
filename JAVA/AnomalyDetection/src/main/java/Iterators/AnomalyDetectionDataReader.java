@@ -24,7 +24,7 @@ public class AnomalyDetectionDataReader {
 
     public AnomalyDetectionDataReader(File file){
         this.skipNumLines = 1;
-        this.skipNumColumns = 51;
+        this.skipNumColumns = 1;
         this.longestTimeSequence = 0;
         this.shortest = 1;
         this.filePath = file.toPath();
