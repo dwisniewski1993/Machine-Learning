@@ -18,6 +18,7 @@ public class AnomalyDetectionDataReader {
     private int longestTimeSequence;
     private int shortest;
     private Iterator<List<Writable>> iter;
+    private Iterator<List<Writable>> labelIter;
     private Path filePath;
     private int totalExamples;
     private Queue<String> currentLines;
@@ -34,27 +35,30 @@ public class AnomalyDetectionDataReader {
 
     public void doInitialize(){
         List<List<Writable>> dataLines = new ArrayList<>();
+        List<List<Writable>> labelLines = new ArrayList<>();
         try {
             List<String> lines = Files.readAllLines(filePath, Charset.forName("UTF-8"));
             for (int i = skipNumLines; i < lines.size(); i ++) {
                 String tempStr = lines.get(i).replaceAll("\"", "")
-                        .replaceAll(",",".")
-                        .replaceAll("Normal", "0")
-                        .replaceAll("Attack", "1");
+                        .replaceAll(",",".");
                 currentLines.offer(tempStr);
                 int templength = tempStr.split(";").length - skipNumColumns;
                 longestTimeSequence = longestTimeSequence < templength? templength:longestTimeSequence;
                 List<Writable> dataLine = new ArrayList<>();
+                List<Writable> labelLine = new ArrayList<>();
                 String[] wary= tempStr.split(";");
-                for (int j = skipNumColumns; j < wary.length; j++ ) {
+                labelLine.add(new Text(wary[wary.length-1]));
+                for (int j = skipNumColumns; j < wary.length-1; j++ ) {
                     dataLine.add(new Text(wary[j]));
                 }
                 dataLines.add(dataLine);
+                labelLines.add(labelLine);
             }
         } catch (Exception e) {
             throw new RuntimeException("loading data failed");
         }
         iter = dataLines.iterator();
+        labelIter = labelLines.iterator();
         totalExamples = dataLines.size();
     }
 
@@ -89,8 +93,13 @@ public class AnomalyDetectionDataReader {
     public void reset() {
         doInitialize();
     }
+
     public int totalExamples() {
         return totalExamples;
+    }
+
+    public Iterator<List<Writable>> getLabelIterator(){
+        return this.labelIter;
     }
 
     public Queue<String> currentLines() {

@@ -8,26 +8,16 @@ import org.deeplearning4j.nn.conf.layers.RnnOutputLayer;
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
 import org.deeplearning4j.nn.weights.WeightInit;
 import org.nd4j.linalg.activations.Activation;
-import org.nd4j.linalg.dataset.api.iterator.DataSetIterator;
 import org.nd4j.linalg.learning.config.Adam;
 import org.nd4j.linalg.lossfunctions.LossFunctions;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 
 public class LSTMNetwork extends AbstractDLModels {
-    private static final Logger log = LoggerFactory.getLogger(LSTMNetwork.class);
-
     public LSTMNetwork(String normalDataPath, String attackDataPath, int batchSize, int numEpochs) {
         super(normalDataPath, attackDataPath, batchSize, numEpochs);
         this.modelName = "LSTM_NETWORK";
         this.modelPath = new File(System.getProperty("user.dir") + "\\" + this.modelName + "_MODEL.zip");
-    }
-
-    @Override
-    public void score(DataSetIterator dataSetIterator) {
-
     }
 
     @Override
