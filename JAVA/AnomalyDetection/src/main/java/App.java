@@ -14,15 +14,16 @@ public class App {
 
         // Specify working directory and files names
         String currentDirectory = System.getProperty("user.dir");
-
         String normalDataFilePath = currentDirectory + "\\" + "data_normal_small.csv";
         String attkDataFilePath = currentDirectory + "\\" + "data_attk_small.csv";
 
+        // LSTM Neural Network
         LSTMNetwork lstm = new LSTMNetwork(normalDataFilePath, attkDataFilePath, 10, 100);
         lstm.train();
         INDArray yhatNormal = lstm.score(lstm.getNormalDataIterator());
-        INDArray yhatBroken = lstm.score(lstm.getBrokenDataIterator());
         lstm.calculateThreshold(yhatNormal);
+        INDArray yhatBroken = lstm.score(lstm.getBrokenDataIterator());
         lstm.anomalyScore(yhatBroken);
+        System.out.println("LSTM model accuracy: " + lstm.getModelAccuracy());
     }
 }

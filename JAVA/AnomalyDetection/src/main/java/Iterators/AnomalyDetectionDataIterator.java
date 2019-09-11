@@ -1,10 +1,12 @@
 package Iterators;
 
+import org.datavec.api.writable.Writable;
 import org.nd4j.linalg.dataset.DataSet;
 import org.nd4j.linalg.dataset.api.DataSetPreProcessor;
 import org.nd4j.linalg.dataset.api.iterator.DataSetIterator;
 
 import java.io.File;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Queue;
 
@@ -106,6 +108,14 @@ public class AnomalyDetectionDataIterator implements DataSetIterator {
         else {
             return next(batchSize);
         }
+    }
+
+    public Iterator<List<Writable>> getLabelsIterator(){
+        return this.recordReader.getLabelIterator();
+    }
+
+    public int totalExamples(){
+        return recordReader.totalExamples();
     }
 
     public Queue<String> getCurrentLines(){
