@@ -1,18 +1,17 @@
-import absl.logging as log
 import os.path
 from time import time
 
+import absl.logging as log
 import numpy as np
 import tensorflow as tf
 from scipy.spatial import distance
 from tensorflow.python.keras.callbacks import TensorBoard, EarlyStopping
 from tensorflow.python.keras.models import Sequential
 
+from Models.AMI import AbstractModelInterface
 from Models.Utils import Preprocessing
 from Models.exeptions import DataNotEqual, InvalidShapes
-from Models.AMI import AbstractModelInterface
 from config import DEFAULT_SCALER, DEFAULT_MONITOR, DEFAULT_MODE, EPOCHS, BATCH_SIZE, VERBOSE, DELTA, PATIENCE
-
 
 log.set_verbosity(log.INFO)
 
@@ -77,24 +76,29 @@ class DLAbstractModel(AbstractModelInterface):
         self.dim = self.normal_data.shape[2]
         self.samples = self.normal_data.shape[0]
 
-    def train(self, retrain: bool = False) -> None:
+    def train(self, retrain: bool = False, tensor_board: bool = False, early_stopping: bool = True) -> None:
         """
         Training deep learning model.
+        :param early_stopping: Stop training when validation error start raising to prevent over-fitting.
+        :param tensor_board: Log metric, loss and validation loss with tf tensor-board.
         :param retrain: Optional param, default False, if true network will train model even if one already exist.
         :return: None, saving the network model file if not exist or retrain is True
         """
         callbacks = []
-        name = f"{self.model_name}-{self.data_name}-{int(time())}"
-        tb = TensorBoard(log_dir='logs/{}'.format(name))
-        callbacks.append(tb)
 
-        cb = EarlyStopping(monitor=DEFAULT_MONITOR,
-                           min_delta=DELTA,
-                           patience=PATIENCE,
-                           verbose=VERBOSE,
-                           mode=DEFAULT_MODE,
-                           restore_best_weights=True)
-        callbacks.append(cb)
+        if tensor_board:
+            name = f"{self.model_name}-{self.data_name}-{int(time())}"
+            tb = TensorBoard(log_dir='logs/{}'.format(name))
+            callbacks.append(tb)
+
+        if early_stopping:
+            cb = EarlyStopping(monitor=DEFAULT_MONITOR,
+                               min_delta=DELTA,
+                               patience=PATIENCE,
+                               verbose=VERBOSE,
+                               mode=DEFAULT_MODE,
+                               restore_best_weights=True)
+            callbacks.append(cb)
 
         data = self.normal_data
 

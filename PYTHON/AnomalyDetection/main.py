@@ -1,22 +1,24 @@
-from Models.Utils import DataHandler, Results
-from Models.DeepLearningModels.LSTM import LSTMModel
-from Models.DeepLearningModels.GRU import GRUModel
 from Models.DeepLearningModels.CONV import CONVModel
 from Models.DeepLearningModels.Forward import FFModel
+from Models.DeepLearningModels.GRU import GRUModel
+from Models.DeepLearningModels.LSTM import LSTMModel
 from Models.FuzzyLogicModel.Fuzzy import FuzzyModel
-from Models.MachineLearningModels.OneClassSVMM import OneClassSVMModel
 from Models.MachineLearningModels.IsolationForrest import IsolationForrestModel
+from Models.MachineLearningModels.OneClassSVMM import OneClassSVMModel
+from Models.Utils import DataHandler, Results
 from config import WINDOW_SIZE
 
 
-def main():
+def main() -> None:
     """
-    Main function. Anomaly/Outliers detection with neural networks architectures, fuzzy logic one-class svm and
+    Main function. Anomaly/Outliers detection with neural networks architectures, fuzzy logic, one-class svm and
     isolation forrest.
     train set: health data 
     validation set: broken data
     :return: None
     """
+
+    # Paths to files with data
     normal_data = r'Datasets/data_normal_small.csv'
     anomaly_file = r'Datasets/data_attk_small.csv'
 

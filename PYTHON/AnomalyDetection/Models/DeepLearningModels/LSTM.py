@@ -1,11 +1,11 @@
-import tensorflow as tf
 import absl.logging as log
+import tensorflow as tf
 from numpy import array, ndarray
-from tensorflow.python.keras.models import Sequential
 from tensorflow.python.keras.layers import Dense, CuDNNLSTM, LSTM
+from tensorflow.python.keras.models import Sequential
+
 from Models.DeepLearningModels.AbstractDlModel import DLAbstractModel
 from config import LSTM_NETWORK, LSTM_CELLS_NUMBER, LSTM_LAYERS_NUMBER, MEAN_ABSOLUTE_ERROR, ADAM_OPTIMIZER
-
 
 log.set_verbosity(log.INFO)
 
@@ -30,7 +30,8 @@ class LSTMModel(DLAbstractModel):
 
         model = Sequential()
         for i in range(LSTM_LAYERS_NUMBER):
-            model.add(rnn_cell(units=LSTM_CELLS_NUMBER, input_shape=(self.window_size, self.dim), return_sequences=True))
+            model.add(rnn_cell(units=LSTM_CELLS_NUMBER, input_shape=(self.window_size, self.dim),
+                               return_sequences=True))
         model.add(Dense(units=self.dim, activation='tanh'))
         model.compile(loss=MEAN_ABSOLUTE_ERROR, optimizer=ADAM_OPTIMIZER)
         log.info(f"Defining {self.model_name} neural network architecture...")

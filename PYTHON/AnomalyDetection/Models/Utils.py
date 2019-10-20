@@ -1,11 +1,10 @@
-import absl.logging as log
 from os import listdir, getcwd
 from os.path import isfile, join
 
+import absl.logging as log
 import numpy as np
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler, StandardScaler, Normalizer, MaxAbsScaler, RobustScaler
-
 
 log.set_verbosity(log.INFO)
 
@@ -58,7 +57,7 @@ class DataHandler:
 
 
 class Preprocessing:
-    def __init__(self, scaler: str):
+    def __init__(self, scaler: str) -> None:
         """
         Needed preprocesing
         """
@@ -79,7 +78,7 @@ class Preprocessing:
 
 
 class Results:
-    def __init__(self):
+    def __init__(self) -> None:
         log.info('Calculating results anomaly detection results...')
         current_path = getcwd()
         results_files = [file for file in listdir(current_path) if isfile(join(current_path, file))
