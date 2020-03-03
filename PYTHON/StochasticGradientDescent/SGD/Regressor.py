@@ -3,47 +3,48 @@ import logging as log
 import numpy as np
 import pandas as pd
 from sklearn.linear_model import SGDRegressor
-from sklearn.metrics import mean_squared_error
+from sklearn.metrics import r2_score, make_scorer
 from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.preprocessing import *
+from config import parameters
 
 
-class SGDR:
+class StochasticGradientDescentRegression:
     """
     Stochastic Gradient Descent Regression
     """
 
-    def __init__(self, trainfile):
+    def __init__(self, train_file):
         """
         Stochastic Gradient Descent Regression Constructor
         Loading and preparing data
-        :param trainfile: Poznań flats data tsv path
+        :param train_file: Poznań flats data tsv path
         """
         log.getLogger().setLevel(log.INFO)
         log.info('SGD Regressor')
 
         # Load set
-        self.trainFile = trainfile
-        trainDataFrame = pd.read_csv(self.trainFile, sep='\t', header=None)
+        self.trainFile = train_file
+        train_data_frame = pd.read_csv(self.trainFile, sep='\t', header=None)
 
         # Mapping string and bool values to numeric
-        self.mapping_string = self.map_columns(trainDataFrame, 4)
-        self.mapping_bool = self.map_columns(trainDataFrame, 1)
-        trainDataFrame = trainDataFrame.applymap(
+        self.mapping_string = self.map_columns(train_data_frame, 4)
+        self.mapping_bool = self.map_columns(train_data_frame, 1)
+        train_data_frame = train_data_frame.applymap(
             lambda x: self.mapping_string.get(x) if x in self.mapping_string else x)
-        trainDataFrame = trainDataFrame.applymap(
+        train_data_frame = train_data_frame.applymap(
             lambda x: self.mapping_bool.get(x) if x in self.mapping_bool else x)
-        trainArray = trainDataFrame.values
+        train_array = train_data_frame.values
 
         # Shuffle Data
-        np.random.shuffle(trainArray)
+        np.random.shuffle(train_array)
 
         # Extract values to numpy.Arrays
-        self.X = trainArray[:, 1:]
-        self.Y = trainArray[:, 0]
+        self.X = train_array[:, 1:]
+        self.Y = train_array[:, 0]
 
-        self.grided_params = []
-        self.sgdr = None
+        self.grid_params = []
+        self.model = None
 
         # Split to train-test sets
         self.X_train, self.X_test, self.Y_train, self.Y_test = train_test_split(self.X, self.Y, test_size=0.3,
@@ -57,14 +58,14 @@ class SGDR:
         print("Features: {}, Labels: {}".format(self.X, self.Y))
 
     @staticmethod
-    def map_columns(df, colnumber: int):
+    def map_columns(df, col_number: int):
         """
         Mapping non numeric values to numeric
         :param df: pandas dataframe that contain dataset
-        :param colnumber: number collumn to map
+        :param col_number: number collumn to map
         :return: dictionary with mapped values
         """
-        return dict([(y, x + 1) for x, y in enumerate(sorted(set(df[colnumber].unique())))])
+        return dict([(y, x + 1) for x, y in enumerate(sorted(set(df[col_number].unique())))])
 
     def rescale(self):
         """
@@ -84,7 +85,7 @@ class SGDR:
         self.X_train = scaler.fit_transform(self.X_train)
         self.X_test = scaler.fit_transform(self.X_test)
 
-    def standalizer(self):
+    def standardize(self):
         """
         Standardlizing data in dataset
         :return: None
@@ -93,35 +94,27 @@ class SGDR:
         self.X_train = scaler.fit_transform(self.X_train)
         self.X_test = scaler.fit_transform(self.X_test)
 
-    def output(self):
+    def score(self):
         """
         Predicting and log values
         :return: None
         """
-        y_pred = self.sgdr.predict(self.X_test)
-        log.info(f"MSE: {mean_squared_error(self.Y_test, y_pred)}")
-        for x, y in zip(y_pred, self.Y_test):
-            log.info(f"Predicted: {x}| Actual: {y}")
+        y_pred = self.model.predict(self.X_test)
+        log.info(f"R2 Score: {r2_score(self.Y_test, y_pred)}")
 
     def grid_search(self):
         """
         Sklearn hyper-parameters grid search
         :return: None
         """
-        hyperparam_grid = {
-            'loss': ('squared_loss', 'huber', 'epsilon_insensitive', 'squared_epsilon_insensitive'),
-            'penalty': ('elasticnet', 'l1', 'l2'),
-            'learning_rate': ('constant', 'optimal', 'invscaling', 'adaptive')
-        }
-        classifier = GridSearchCV(SGDRegressor(), hyperparam_grid, cv=5, iid=False, scoring='explained_variance')
+        classifier = GridSearchCV(SGDRegressor(), parameters, cv=5, scoring=make_scorer(r2_score,
+                                                                                        greater_is_better=True))
         classifier.fit(self.X_train, self.Y_train)
-        self.grided_params = [classifier.best_estimator_.loss, classifier.best_estimator_.penalty,
-                              classifier.best_estimator_.learning_rate]
+        self.grid_params = classifier.best_params_
 
     def train_model(self):
         """
         Fiting model with grid search hyper-parameters
         :return: None
         """
-        self.sgdr = SGDRegressor(loss=self.grided_params[0], penalty=self.grided_params[1],
-                                 learning_rate=self.grided_params[2]).fit(self.X_train, self.Y_train)
+        self.model = SGDRegressor(**dict(self.grid_params)).fit(self.X_train, self.Y_train)
