@@ -1,5 +1,5 @@
-from SVM.SVMClassifier import SVMC
-from SVM.SVMRegressor import SVMR
+from SVM.Classifier import SupportVectorMachineClassification
+from SVM.Regressor import SupportVectorMachineRegression
 
 
 def main():
@@ -11,16 +11,16 @@ def main():
     """
     # SVR Classification
     train_file_location_classification = r'train.csv'
-    svmclassifier = SVMC(trainfile=train_file_location_classification)
-    svmclassifier.normalize()
-    svmclassifier.grid_search()
-    svmclassifier.train_model()
-    svmclassifier.output()
+    svm_classifier = SupportVectorMachineClassification(train_file=train_file_location_classification)
+    svm_classifier.normalize()
+    svm_classifier.grid_search()
+    svm_classifier.train_model()
+    svm_classifier.score()
 
-    # SVR Regressor
+    # SVR Regression
     train_file_location_regression = r'train.tsv'
-    svrregressor = SVMR(trainfile=train_file_location_regression)
-    svrregressor.normalize()
-    svrregressor.grid_search()
-    svrregressor.train_model()
-    svrregressor.output()
+    svr_regression = SupportVectorMachineRegression(train_file=train_file_location_regression)
+    svr_regression.standardize()
+    svr_regression.grid_search()
+    svr_regression.train_model()
+    svr_regression.score()
