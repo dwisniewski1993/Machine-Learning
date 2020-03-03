@@ -1,15 +1,15 @@
 import numpy as np
-from tensorflow.python.keras.models import Sequential, load_model
-from tensorflow.python.keras.layers import Dense
-from tensorflow.python.keras.optimizers import Adam
+from tensorflow.keras.models import Sequential, load_model
+from tensorflow.keras.layers import Dense
+from tensorflow.keras.optimizers import Adam
 from collections import deque
 import random
 import absl.logging as log
 from tqdm import tqdm
 import gym
 from os.path import exists
-from config import GYM_ENVIROMENT, EPSILON, MODEL_NAME, DISCOUNT, DEEP_EPISODES, AGGREGATE_STATS_EVERY, MIN_EPSILON, \
-    EPSILON_DECAY_VALUE, UPDATE_TARGET_EVERY, REPLAY_MEMORY_SIZE, MINIBATCH_SIZE, MIN_REPLAY_MEMORY_SIZE
+from config import GYM_ENVIRONMENT, EPSILON, MODEL_NAME, DISCOUNT, DEEP_EPISODES, AGGREGATE_STATS_EVERY, MIN_EPSILON, \
+    EPSILON_DECAY_VALUE, UPDATE_TARGET_EVERY, REPLAY_MEMORY_SIZE, MINI_BATCH_SIZE, MIN_REPLAY_MEMORY_SIZE
 
 
 log.set_verbosity(log.INFO)
@@ -18,14 +18,12 @@ log.set_verbosity(log.INFO)
 class DeepQLearning:
     def __init__(self):
         log.info("Initialize Deep QLearning")
-        self.env = gym.make(GYM_ENVIROMENT)
+        self.env = gym.make(GYM_ENVIRONMENT)
         self.model = self.create_model()
+        self.target_model = self.create_model()
 
         if exists(f'{MODEL_NAME}.model'):
             self.model = load_model(f'{MODEL_NAME}.model')
-
-        self.target_model = self.create_model()
-        self.target_model.set_weights(self.model.get_weights())
 
         self.replay_memory = deque(maxlen=REPLAY_MEMORY_SIZE)
 
@@ -51,7 +49,7 @@ class DeepQLearning:
         if len(self.replay_memory) < MIN_REPLAY_MEMORY_SIZE:
             return
 
-        mini_batch = random.sample(self.replay_memory, MINIBATCH_SIZE)
+        mini_batch = random.sample(self.replay_memory, MINI_BATCH_SIZE)
 
         current_states = np.array([transition[0] for transition in mini_batch])
         current_qs_list = self.model.predict(current_states)
@@ -75,7 +73,7 @@ class DeepQLearning:
             x.append(current_state)
             y.append(current_qs)
 
-        self.model.fit(np.array(x), np.array(y), batch_size=MINIBATCH_SIZE, verbose=0, shuffle=False)
+        self.model.fit(np.array(x), np.array(y), batch_size=MINI_BATCH_SIZE, verbose=0, shuffle=False)
 
         if terminal_state:
             self.target_update_counter += 1

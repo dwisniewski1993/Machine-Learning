@@ -3,7 +3,7 @@ import absl.logging as log
 import numpy as np
 from tqdm import tqdm
 from os.path import exists
-from config import GYM_ENVIROMENT, LEARNING_RATE, DISCOUNT, EPISODES, SHOW_EVERY, DISCRETE_SIZE, EPSILON, \
+from config import GYM_ENVIRONMENT, LEARNING_RATE, DISCOUNT, EPISODES, SHOW_EVERY, DISCRETE_SIZE, EPSILON, \
     START_EPSILON_DECAYING, END_EPSILON_DECAYING, EPSILON_DECAY_VALUE
 
 
@@ -13,7 +13,7 @@ log.set_verbosity(log.INFO)
 class SimpleQLearning:
     def __init__(self) -> None:
         log.info("Initialize Simple QLearning")
-        self.env = gym.make(GYM_ENVIROMENT)
+        self.env = gym.make(GYM_ENVIRONMENT)
 
         discrete_os_size = [DISCRETE_SIZE] * len(self.env.observation_space.high)
         self.discrete_os_win_size = (self.env.observation_space.high-self.env.observation_space.low)/discrete_os_size
