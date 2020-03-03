@@ -12,11 +12,11 @@ from tensorflow.python.keras.models import Sequential
 
 
 class Sentencer:
-    def __init__(self, possitive_data: str, negative_data: str) -> None:
+    def __init__(self, positive_data: str, negative_data: str) -> None:
         log.getLogger().setLevel(log.INFO)
         log.info('Sentence Classifier')
 
-        self.pos_path = possitive_data
+        self.pos_path = positive_data
         self.neg_path = negative_data
 
         self.lemmatizer = WordNetLemmatizer()
@@ -55,8 +55,8 @@ class Sentencer:
         dataset = []
         with open(sample, 'r') as f:
             contents = f.readlines()
-            for l in contents[:self.hm_lines]:
-                current_words = word_tokenize(l.lower())
+            for letter in contents[:self.hm_lines]:
+                current_words = word_tokenize(letter.lower())
                 current_words = [self.lemmatizer.lemmatize(i) for i in current_words]
                 features = np.zeros(len(lexicon))
                 for word in current_words:
