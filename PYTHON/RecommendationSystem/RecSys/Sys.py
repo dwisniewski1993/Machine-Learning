@@ -5,10 +5,10 @@ import time
 import numpy as np
 import pandas as pd
 import tensorflow as tf
-from sklearn.metrics import mean_absolute_error
-from tensorflow.python.keras.callbacks import TensorBoard
-from tensorflow.python.keras.layers import Input, Embedding, multiply, Dropout, Dense, Flatten, concatenate
-from tensorflow.python.keras.models import Model
+from sklearn.metrics import r2_score
+from tensorflow.keras.callbacks import TensorBoard
+from tensorflow.keras.layers import Input, Embedding, multiply, Dropout, Dense, Flatten, concatenate
+from tensorflow.keras.models import Model
 
 
 class RecommendationSystem:
@@ -28,7 +28,7 @@ class RecommendationSystem:
         self.max_movie_id = max(df.movieId.tolist())
 
         self.model = self.build_model(self.max_movie_id, self.max_user_id)
-        self.tb = TensorBoard(log_dir=f"logs/Recomender-{int(time.time())}")
+        self.tb = TensorBoard(log_dir=f"logs\\Recomender-{int(time.time())}")
 
     @staticmethod
     def map_data(series: pd.Series) -> dict:
@@ -65,7 +65,7 @@ class RecommendationSystem:
 
         model = Model(inputs=[movie_inputs, user_inputs], outputs=network)
         model.summary()
-        model.compile(loss='mae', optimizer='adam', metrics=["mae"])
+        model.compile(loss='mae', optimizer='adam', metrics=['mse'])
         return model
 
     def save_model(self, path: str) -> None:
@@ -77,13 +77,13 @@ class RecommendationSystem:
         self.model = tf.keras.models.load_model(path)
 
     def train_model(self) -> None:
-        path = 'Recommendation__Model'
+        path = 'Recommendation__Model.h5'
         if os.path.exists(path):
             log.info('Model detected')
             self.load_model(path)
         else:
             log.info('Start training model')
-            self.model.fit([self.train.movieId.values, self.train.userId.values], self.train.rating.values, nb_epoch=10,
+            self.model.fit([self.train.movieId.values, self.train.userId.values], self.train.rating.values, epochs=100,
                            verbose=0, validation_split=0.2, callbacks=[self.tb])
             self.save_model(path)
         log.info('Model training complete!')
@@ -91,5 +91,5 @@ class RecommendationSystem:
     def model_evaluation(self) -> None:
         log.info('Start ML model evaluation')
         predictions = self.model.predict([self.test.movieId.values, self.test.userId.values])
-        score = mean_absolute_error(self.test.rating.values, predictions)
-        log.info(f"Mean Absolute Error for trained model: {score}")
+        score = r2_score(self.test.rating.values, predictions)
+        log.info(f"R2 Score for trained model: {score}")
