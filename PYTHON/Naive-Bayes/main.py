@@ -1,4 +1,4 @@
-from NB.NB import NaiveBayesClassifier
+from NB.Classifier import NaiveBayesClassifier
 
 
 def main():
@@ -9,7 +9,7 @@ def main():
     """
     # Naive Bayes Classification
     train_file_location = r'train.csv'
-    nb = NaiveBayesClassifier(trainfile=train_file_location)
+    nb = NaiveBayesClassifier(train_file=train_file_location)
     nb.normalize()
     nb.train_model()
-    nb.output()
+    nb.score()
