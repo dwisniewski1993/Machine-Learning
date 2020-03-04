@@ -2,39 +2,41 @@ import logging as log
 
 import numpy as np
 import pandas as pd
+from sklearn.metrics import f1_score
 from sklearn.linear_model import PassiveAggressiveClassifier
 from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.preprocessing import *
+from config import parameters
 
 
-class PAClassifier:
+class PassiveAggressiveClassification:
     """
     Passive Aggressive Classification
     """
 
-    def __init__(self, trainfile):
+    def __init__(self, train_file):
         """
         PA Classification Constructor
         Loading and preparing data
-        :param trainfile: iris data csv path
+        :param train_file: iris data csv path
         """
         log.getLogger().setLevel(log.INFO)
         log.info('Passive Aggressive Classification')
 
         # Load set
-        self.trainFile = trainfile
-        trainDataFrame = pd.read_csv(self.trainFile)
-        trainArray = trainDataFrame.values
+        self.trainFile = train_file
+        train_data_frame = pd.read_csv(self.trainFile)
+        train_array = train_data_frame.values
 
         # Shuffle Data
-        np.random.shuffle(trainArray)
+        np.random.shuffle(train_array)
 
         # Extract values to numpy.Arrays
-        self.X = trainArray[:, 0:4]
-        self.Y = trainArray[:, 4]
+        self.X = train_array[:, 0:4]
+        self.Y = train_array[:, 4]
 
-        self.grided_params = []
-        self.pac = None
+        self.grid_params = []
+        self.model = None
 
         # Map string labels to numeric
         self.Y = self.map_labels(self.Y)
@@ -57,28 +59,9 @@ class PAClassifier:
         :param labels: numpy.Arrays contains labels
         :return: list of mapped values
         """
-        maped = [0.0 if x == 'Iris-setosa' else 1.0 if x == 'Iris-versicolor' else 2.0 for x in labels]
-        return maped
+        return [0.0 if x == 'Iris-setosa' else 1.0 if x == 'Iris-versicolor' else 2.0 for x in labels]
 
-    def rescale(self):
-        """
-        Rescaling data in dataset to [0,1]
-        :return: None
-        """
-        scaler = MinMaxScaler(feature_range=(0, 1))
-        self.X_train = scaler.fit_transform(self.X_train)
-        self.X_test = scaler.fit_transform(self.X_test)
-
-    def normalize(self):
-        """
-        Normalizing data in dataset
-        :return: None
-        """
-        scaler = Normalizer()
-        self.X_train = scaler.fit_transform(self.X_train)
-        self.X_test = scaler.fit_transform(self.X_test)
-
-    def standalizer(self):
+    def standardize(self):
         """
         Standardlizing data in dataset
         :return: None
@@ -87,28 +70,25 @@ class PAClassifier:
         self.X_train = scaler.fit_transform(self.X_train)
         self.X_test = scaler.fit_transform(self.X_test)
 
-    def output(self):
+    def score(self):
         """
         Calculating and logging accuracy score
         :return: None
         """
-        log.info(f"Accuracy: {self.pac.score(self.X_test, self.Y_test):.2f}")
+        log.info(f"F1 Score: {f1_score(self.Y_test, self.model.predict(self.X_test), average='weighted'):.2f}")
 
     def grid_search(self):
         """
         Sklearn hyper-parameters grid search
         :return: None
         """
-        hyperparam_grid = {
-            'C': [1, 3, 5, 7, 9, 15, 20]
-        }
-        classifier = GridSearchCV(PassiveAggressiveClassifier(), hyperparam_grid, cv=5, iid=False)
+        classifier = GridSearchCV(PassiveAggressiveClassifier(), parameters, cv=5)
         classifier.fit(self.X_train, self.Y_train)
-        self.grided_params = [classifier.best_estimator_.C]
+        self.grid_params = classifier.best_params_
 
     def train_model(self):
         """
         Fiting model with grid search hyper-parameters
         :return: None
         """
-        self.pac = PassiveAggressiveClassifier(C=self.grided_params[0]).fit(self.X_train, self.Y_train)
+        self.model = PassiveAggressiveClassifier(**dict(self.grid_params)).fit(self.X_train, self.Y_train)
