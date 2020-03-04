@@ -4,7 +4,7 @@ import tflearn
 from tflearn.data_utils import string_to_semi_redundant_sequences, random_sequence_from_string
 
 
-class LSTMNN:
+class LongShortTermMemoryNeuralNetwork:
     """
     LSTM Neural Network generate city name
     """
@@ -17,23 +17,23 @@ class LSTMNN:
         log.getLogger().setLevel(log.INFO)
         log.info('City Name Generator')
         self.path = path
-        self.max_lenght = 20
+        self.max_length = 20
         self.string_utf8 = open(self.path, "r").read()
         self.seed = 0
-        self.X, self.Y, self.char_idx = string_to_semi_redundant_sequences(self.string_utf8, seq_maxlen=self.max_lenght,
+        self.X, self.Y, self.char_idx = string_to_semi_redundant_sequences(self.string_utf8, seq_maxlen=self.max_length,
                                                                            redun_step=3)
-        self.generator = self.build_model(self.max_lenght, self.char_idx)
+        self.generator = self.build_model(self.max_length, self.char_idx)
 
     @staticmethod
-    def build_model(maxlen: int, char_idx: dict) -> tflearn.models.generator.SequenceGenerator:
+    def build_model(max_len: int, char_idx: dict) -> tflearn.models.generator.SequenceGenerator:
         """
         Building LSTM Neural Network Model
-        :param maxlen: maximum length of char
+        :param max_len: maximum length of char
         :param char_idx: dictionary - each char to int number mapped
         :return: tflearn model object
         """
         log.info('Building model')
-        net = tflearn.input_data(shape=[None, maxlen, len(char_idx)])
+        net = tflearn.input_data(shape=[None, max_len, len(char_idx)])
         net = tflearn.lstm(net, 128, return_seq=True)
         net = tflearn.dropout(net, 0.5)
         net = tflearn.lstm(net, 128)
@@ -43,7 +43,7 @@ class LSTMNN:
 
         genarator = tflearn.SequenceGenerator(net,
                                               dictionary=char_idx,
-                                              seq_maxlen=maxlen,
+                                              seq_maxlen=max_len,
                                               clip_gradients=5.0,
                                               checkpoint_path='model_us_cities')
         return genarator
@@ -58,7 +58,7 @@ class LSTMNN:
         """
         log.info(f"Start training on {num_epochs} epochs....")
         for i in range(num_epochs):
-            self.seed = random_sequence_from_string(self.string_utf8, self.max_lenght)
+            self.seed = random_sequence_from_string(self.string_utf8, self.max_length)
             self.generator.fit(self.X, self.Y, validation_set=0.1, batch_size=128, n_epoch=1, run_id='us_cities')
 
             log.info('----------TESTING----------')
