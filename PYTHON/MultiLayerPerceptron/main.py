@@ -1,5 +1,5 @@
-from MLPTasks.MLPC import MultiLayerPerceptronClassifier
-from MLPTasks.MLPR import MultolayerPerceptroRegressor
+from MLP.Classification import MultiLayerPerceptronClassification
+from MLP.Regression import MultilayerPerceptronRegression
 
 
 def main():
@@ -11,16 +11,14 @@ def main():
     """
     # MLP Classification
     train_file_location_classification = r'train.csv'
-    mlpc_executor = MultiLayerPerceptronClassifier(trainfile=train_file_location_classification)
-    mlpc_executor.normalize()
-    mlpc_executor.grid_search()
-    mlpc_executor.train_model()
-    mlpc_executor.output()
+    mlp_classification = MultiLayerPerceptronClassification(train_file=train_file_location_classification)
+    mlp_classification.grid_search()
+    mlp_classification.train_model()
+    mlp_classification.score()
 
     # MLP Regression
     train_file_location_regression = r'train.tsv'
-    mlpr_regression_executor = MultolayerPerceptroRegressor(trainfile=train_file_location_regression)
-    mlpr_regression_executor.normalize()
-    mlpr_regression_executor.grid_search()
-    mlpr_regression_executor.train_model()
-    mlpr_regression_executor.output()
+    mlp_regression = MultilayerPerceptronRegression(train_file=train_file_location_regression)
+    mlp_regression.grid_search()
+    mlp_regression.train_model()
+    mlp_regression.score()
