@@ -1,5 +1,6 @@
 from numpy import ndarray, array
-from sklearn.ensemble.iforest import IsolationForest
+from sklearn.ensemble import IsolationForest
+
 from Models.MachineLearningModels.AbstractMlModel import AbstractMlModel
 from config import ISOLATION_MODEL, ISOLATION_CORES, ISOLATION_ESTIMATORS_NUMBER, VERBOSE
 

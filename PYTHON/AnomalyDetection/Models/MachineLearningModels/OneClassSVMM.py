@@ -1,5 +1,6 @@
 from numpy import ndarray, array
-from sklearn.svm.classes import OneClassSVM
+from sklearn.svm import OneClassSVM
+
 from Models.MachineLearningModels.AbstractMlModel import AbstractMlModel
 from config import VERBOSE, ONECLASSSVM_MODEL
 
