@@ -53,3 +53,7 @@ def main() -> None:
 
     r2_val = torch_neural_network_regression.score()
     print(f"PyTorch regression r2 score: {r2_val}, 500 epochs in {elapsed_torch_regression} seconds")
+
+
+if __name__ == '__main__':
+    main()
