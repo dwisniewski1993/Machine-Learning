@@ -10,7 +10,7 @@ def main():
     :return: None
     """
     # SVR Classification
-    train_file_location_classification = r'train.csv'
+    train_file_location_classification = 'train.csv'
     svm_classifier = SupportVectorMachineClassification(train_file=train_file_location_classification)
     svm_classifier.normalize()
     svm_classifier.grid_search()
@@ -18,9 +18,13 @@ def main():
     svm_classifier.score()
 
     # SVR Regression
-    train_file_location_regression = r'train.tsv'
+    train_file_location_regression = 'train.tsv'
     svr_regression = SupportVectorMachineRegression(train_file=train_file_location_regression)
     svr_regression.standardize()
     svr_regression.grid_search()
     svr_regression.train_model()
     svr_regression.score()
+
+
+if __name__ == '__main__':
+    main()
