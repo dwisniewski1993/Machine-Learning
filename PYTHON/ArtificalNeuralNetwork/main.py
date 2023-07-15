@@ -42,11 +42,14 @@ def main() -> None:
     elapsed_torch_regression = time.time() - start_time
 
     # Output
-    val_loss, val_accuracy = tf_neural_net_classifier.output()
-    print(f"Tensorflow classifier accuracy: {val_accuracy}, 100 epochs in {elapsed_tf_classification}")
-    val_loss, val_accuracy = tf_neural_net_regression.output()
-    print(f"Tensorflow regression loss: {val_loss}, 100 epochs in {elapsed_tf_regression}")
-    val_accuracy = torch_neural_net_classifier.output()
-    print(f"PyTorch classifier accuracy: {val_accuracy}, 1000 epochs in {elapsed_torch_classification}")
-    val_loss = torch_neural_network_regression.output()
-    print(f"PyTorch regression loss: {val_loss}, 1000 epochs in {elapsed_torch_regression}")
+    f1_val = tf_neural_net_classifier.score()
+    print(f"Tensorflow classifier f1score: {f1_val}, 500 epochs in {elapsed_tf_classification}")
+
+    r2_val = tf_neural_net_regression.score()
+    print(f"Tensorflow regression r2score: {r2_val}, 500 epochs in {elapsed_tf_regression}")
+
+    f1_val = torch_neural_net_classifier.score()
+    print(f"PyTorch classifier f1score: {f1_val}, 500 epochs in {elapsed_torch_classification}")
+
+    r2_val = torch_neural_network_regression.score()
+    print(f"PyTorch regression r2score: {r2_val}, 500 epochs in {elapsed_torch_regression}")
