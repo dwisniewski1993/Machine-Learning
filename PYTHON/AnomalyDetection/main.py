@@ -54,7 +54,7 @@ def main() -> None:
     forward.train()
     yhat_healthy = forward.score(data=forward.get_normal_data())
     yhat_broken = forward.score(data=forward.get_anomaly_data())
-    forward.calculate_threshold(helth=yhat_healthy)
+    forward.calculate_threshold(health=yhat_healthy)
     forward.anomaly_score(pred=yhat_broken)
 
     # LSTM Auto-Encoder
@@ -63,7 +63,7 @@ def main() -> None:
     lstm.train()
     yhat_healthy = lstm.score(data=lstm.get_normal_data())
     yhat_broken = lstm.score(data=lstm.get_anomaly_data())
-    lstm.calculate_threshold(helth=yhat_healthy)
+    lstm.calculate_threshold(health=yhat_healthy)
     lstm.anomaly_score(pred=yhat_broken)
 
     # GRU Auto-Encoder
@@ -72,7 +72,7 @@ def main() -> None:
     gru.train()
     yhat_healthy = gru.score(data=gru.get_normal_data())
     yhat_broken = gru.score(data=gru.get_anomaly_data())
-    gru.calculate_threshold(helth=yhat_healthy)
+    gru.calculate_threshold(health=yhat_healthy)
     gru.anomaly_score(pred=yhat_broken)
 
     # Convolutional Auto-Encoder
@@ -81,7 +81,7 @@ def main() -> None:
     conv.train()
     yhat_healthy = conv.score(data=conv.get_normal_data())
     yhat_broken = conv.score(data=conv.get_anomaly_data())
-    conv.calculate_threshold(helth=yhat_healthy)
+    conv.calculate_threshold(health=yhat_healthy)
     conv.anomaly_score(pred=yhat_broken)
 
     Results()
