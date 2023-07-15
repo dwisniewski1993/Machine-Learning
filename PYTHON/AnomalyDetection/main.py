@@ -13,7 +13,7 @@ def main() -> None:
     """
     Main function. Anomaly/Outliers detection with neural networks architectures, fuzzy logic, one-class svm and
     isolation forrest.
-    train set: health data 
+    train set: health data
     validation set: broken data
     :return: None
     """
@@ -42,7 +42,7 @@ def main() -> None:
     svm.train()
     svm.score(svm.anomaly_data)
 
-    # Isolation Forrest
+    # Isolation Forest
     iso = IsolationForrestModel(healthy_data=health_data, broken_data=anomaly_data, dataset_name='Generated',
                                 data_labels=labels)
     iso.train()
@@ -84,6 +84,7 @@ def main() -> None:
     conv.calculate_threshold(health=yhat_healthy)
     conv.anomaly_score(pred=yhat_broken)
 
+    # Calculate results
     Results()
 
 
