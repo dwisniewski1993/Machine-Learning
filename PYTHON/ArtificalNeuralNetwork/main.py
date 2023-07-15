@@ -13,7 +13,7 @@ def main() -> None:
     train.tsv: Poznań flats prices
     :return: None
     """
-    # Specify files path
+    # Specify file paths
     train_file_location_classification = r'train.csv'
     train_file_location_regression = r'train.tsv'
 
@@ -43,13 +43,13 @@ def main() -> None:
 
     # Output
     f1_val = tf_neural_net_classifier.score()
-    print(f"Tensorflow classifier f1score: {f1_val}, 500 epochs in {elapsed_tf_classification}")
+    print(f"TensorFlow classifier f1 score: {f1_val}, 500 epochs in {elapsed_tf_classification} seconds")
 
     r2_val = tf_neural_net_regression.score()
-    print(f"Tensorflow regression r2score: {r2_val}, 500 epochs in {elapsed_tf_regression}")
+    print(f"TensorFlow regression r2 score: {r2_val}, 500 epochs in {elapsed_tf_regression} seconds")
 
     f1_val = torch_neural_net_classifier.score()
-    print(f"PyTorch classifier f1score: {f1_val}, 500 epochs in {elapsed_torch_classification}")
+    print(f"PyTorch classifier f1 score: {f1_val}, 500 epochs in {elapsed_torch_classification} seconds")
 
     r2_val = torch_neural_network_regression.score()
-    print(f"PyTorch regression r2score: {r2_val}, 500 epochs in {elapsed_torch_regression}")
+    print(f"PyTorch regression r2 score: {r2_val}, 500 epochs in {elapsed_torch_regression} seconds")
