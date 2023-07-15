@@ -1,3 +1,6 @@
+import numpy as np
+from typing import Tuple
+
 from NN.FeedForwardNeuralNetworkClassifier import FFNeuralNetwork
 from NN.RecurentNeuralNetworkClassfier import RecurrentNeuralNetwork
 from NN.ConvolutionalNeuralNetworkClassifier import ConvNeuralNetwork
@@ -16,30 +19,35 @@ def main() -> None:
 
     # Feed Forward Network Classification
     nn1 = FFNeuralNetwork()
-    num1 = nn1.get_prediction(data=dataset, id=0)
-    acc1 = nn1.get_val_acc()
-    loss1 = nn1.get_val_loss()
-    f11 = nn1.get_f1_score()
+    num1, acc1, loss1, f1_1 = classify(nn1, dataset)
 
-    # Recurent Network Classification
+    # Recurrent Network Classification
     nn2 = RecurrentNeuralNetwork()
-    num2 = nn2.get_prediction(data=dataset, id=0)
-    acc2 = nn2.get_val_acc()
-    loss2 = nn2.get_val_loss()
-    f12 = nn2.get_f1_score()
+    num2, acc2, loss2, f1_2 = classify(nn2, dataset)
 
-    # Conv Network Classification
+    # Convolutional Network Classification
     nn3 = ConvNeuralNetwork()
-    num3 = nn3.get_prediction(data=dataset, id=0)
-    acc3 = nn3.get_val_acc()
-    loss3 = nn3.get_val_loss()
-    f13 = nn3.get_f1_score()
+    num3, acc3, loss3, f1_3 = classify(nn3, dataset)
 
     # Results
     print("---------------RESULTS---------------")
-    print(f"Feed Forward model - Accuracy: {acc1}, Loss: {loss1}, F1 Score:{f11}, with predicted: {num1}")
-    print(f"Recurrent model - Accuracy: {acc2}, Loss: {loss2}, F1 Score:{f12}, with predicted: {num2}")
-    print(f"Convolution model - Accuracy: {acc3}, Loss: {loss3}, F1 Score:{f13}, with predicted: {num3}")
+    print(f"Feed Forward model - Accuracy: {acc1}, Loss: {loss1}, F1 Score: {f1_1}, Predicted: {num1}")
+    print(f"Recurrent model - Accuracy: {acc2}, Loss: {loss2}, F1 Score: {f1_2}, Predicted: {num2}")
+    print(f"Convolutional model - Accuracy: {acc3}, Loss: {loss3}, F1 Score: {f1_3}, Predicted: {num3}")
+
+
+def classify(model: object, dataset: np.array) -> Tuple[int, float, float, float]:
+    """
+    Perform classification using a given neural network model on the dataset
+    :param model: Neural network model for classification
+    :param dataset: Dataset to classify
+    :return: Tuple containing the predicted class, accuracy, loss, and F1 score
+    """
+    num = model.get_prediction(data=dataset, id=0)
+    acc = model.get_val_acc()
+    loss = model.get_val_loss()
+    f1_score = model.get_f1_score()
+    return num, acc, loss, f1_score
 
 
 if __name__ == '__main__':
