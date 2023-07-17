@@ -2,8 +2,9 @@ import logging as log
 
 import numpy as np
 import pandas as pd
+from sklearn.metrics import f1_score
 from sklearn.model_selection import train_test_split, GridSearchCV
-from sklearn.preprocessing import *
+from sklearn.preprocessing import MinMaxScaler, Normalizer, StandardScaler
 from sklearn.tree import DecisionTreeClassifier
 
 
@@ -11,26 +12,27 @@ class DTClassifier:
     """
     Decision Tree Classification
     """
-    def __init__(self, trainfile):
+
+    def __init__(self, train_file: str) -> None:
         """
         Decision Tree Classification Constructor
         Loading and preparing data
-        :param trainfile: iris data csv path
+        :param train_file: Path to the iris data CSV file
         """
         log.getLogger().setLevel(log.INFO)
         log.info('Decision Tree Classifier')
 
-        # Load set
-        self.trainFile = trainfile
-        trainDataFrame = pd.read_csv(self.trainFile)
-        trainArray = trainDataFrame.values
+        # Load dataset
+        self.train_file = train_file
+        train_data_frame = pd.read_csv(self.train_file)
+        train_array = train_data_frame.values
 
         # Shuffle Data
-        np.random.shuffle(trainArray)
+        np.random.shuffle(train_array)
 
-        # Extract value to numpy.Array
-        self.X = trainArray[:, 0:4]
-        self.Y = trainArray[:, 4]
+        # Extract values to numpy arrays
+        self.X = train_array[:, 0:4]
+        self.Y = train_array[:, 4]
 
         self.grided_params = []
         self.dtc = None
@@ -41,7 +43,7 @@ class DTClassifier:
         self.X_train, self.X_test, self.Y_train, self.Y_test = train_test_split(self.X, self.Y, test_size=0.3,
                                                                                 random_state=0)
 
-    def __str__(self):
+    def __str__(self) -> None:
         """
         Printing data
         :return: None
@@ -49,63 +51,63 @@ class DTClassifier:
         print("Features: {}, Labels: {}".format(self.X, self.Y))
 
     @staticmethod
-    def map_labels(labels):
+    def map_labels(labels: np.array) -> list:
         """
-        Maping iris data labels to numeric
-        :param labels: numpy.Arrays contains labels
+        Mapping iris data labels to numeric
+        :param labels: numpy array containing labels
         :return: list of mapped values
         """
-        maped = [0.0 if x == 'Iris-setosa' else 1.0 if x == 'Iris-versicolor' else 2.0 for x in labels]
-        return maped
+        mapped = [0.0 if x == 'Iris-setosa' else 1.0 if x == 'Iris-versicolor' else 2.0 for x in labels]
+        return mapped
 
-    def rescale(self):
+    def rescale(self) -> None:
         """
-        Rescaling data in dataset to [0,1]
+        Rescaling data in the dataset to [0, 1]
         :return: None
         """
         scaler = MinMaxScaler(feature_range=(0, 1))
         self.X_train = scaler.fit_transform(self.X_train)
-        self.X_test = scaler.fit_transform(self.X_test)
+        self.X_test = scaler.transform(self.X_test)
 
-    def normalize(self):
+    def normalize(self) -> None:
         """
-        Normalizing data in dataset
+        Normalizing data in the dataset
         :return: None
         """
         scaler = Normalizer()
         self.X_train = scaler.fit_transform(self.X_train)
-        self.X_test = scaler.fit_transform(self.X_test)
+        self.X_test = scaler.transform(self.X_test)
 
-    def standalizer(self):
+    def standardize(self) -> None:
         """
-        Standardlizing data in dataset
+        Standardizing data in the dataset
         :return: None
         """
         scaler = StandardScaler()
         self.X_train = scaler.fit_transform(self.X_train)
-        self.X_test = scaler.fit_transform(self.X_test)
+        self.X_test = scaler.transform(self.X_test)
 
-    def train_model(self):
+    def train_model(self) -> None:
         """
-        Fiting model with grid search hyper-parameters
+        Fitting the model with grid search hyperparameters
         :return: None
         """
         self.dtc = DecisionTreeClassifier(max_depth=self.grided_params[0])
         self.dtc.fit(self.X_train, self.Y_train)
 
-    def output(self):
+    def output(self) -> None:
         """
-        Calculating and logging accuracy score
+        Calculating and logging F1 score
         :return: None
         """
-        log.info(f"Accuracy: {self.dtc.score(self.X_test, self.Y_test):.2f}")
+        log.info(f"F1 Score: {f1_score(self.Y_test, self.dtc.predict(self.X_test), average='weighted'):.2f}")
 
-    def grid_search(self):
+    def grid_search(self) -> None:
         """
-        Sklearn hyper-parameters grid search
+        Perform grid search for hyperparameters
         :return: None
         """
         hyperparam_grid = {'max_depth': np.arange(2, 15)}
-        classifier = GridSearchCV(DecisionTreeClassifier(), hyperparam_grid, cv=5, iid=False)
+        classifier = GridSearchCV(DecisionTreeClassifier(), hyperparam_grid, cv=5)
         classifier.fit(self.X_train, self.Y_train)
         self.grided_params = [classifier.best_estimator_.max_depth]

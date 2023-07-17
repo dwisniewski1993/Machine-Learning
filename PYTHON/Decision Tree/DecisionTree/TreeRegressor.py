@@ -2,54 +2,54 @@ import logging as log
 
 import numpy as np
 import pandas as pd
-from sklearn.metrics import mean_squared_error
+from sklearn.metrics import r2_score
 from sklearn.model_selection import train_test_split, GridSearchCV
-from sklearn.preprocessing import *
+from sklearn.preprocessing import MinMaxScaler, Normalizer, StandardScaler
 from sklearn.tree import DecisionTreeRegressor
 
 
-class DTRegressior:
+class DTRegressor:
     """
     Decision Tree Regressor
     """
 
-    def __init__(self, trainfile):
+    def __init__(self, train_file: str) -> None:
         """
         Decision Tree Regression Constructor
         Loading and preparing data
-        :param trainfile: Poznań flats data tsv path
+        :param train_file: Path to the Poznań flats data TSV file
         """
         log.getLogger().setLevel(log.INFO)
         log.info('Decision Tree Regressor')
 
-        # Load set
-        self.trainFile = trainfile
-        trainDataFrame = pd.read_csv(self.trainFile, sep='\t', header=None)
+        # Load dataset
+        self.train_file = train_file
+        train_data_frame = pd.read_csv(self.train_file, sep='\t', header=None)
 
         # Mapping string and bool values to numeric
-        self.mapping_string = self.map_columns(trainDataFrame, 4)
-        self.mapping_bool = self.map_columns(trainDataFrame, 1)
-        trainDataFrame = trainDataFrame.applymap(
+        self.mapping_string = self.map_columns(train_data_frame, 4)
+        self.mapping_bool = self.map_columns(train_data_frame, 1)
+        train_data_frame = train_data_frame.applymap(
             lambda x: self.mapping_string.get(x) if x in self.mapping_string else x)
-        trainDataFrame = trainDataFrame.applymap(
+        train_data_frame = train_data_frame.applymap(
             lambda x: self.mapping_bool.get(x) if x in self.mapping_bool else x)
-        trainArray = trainDataFrame.values
+        train_array = train_data_frame.values
 
         # Shuffle Data
-        np.random.shuffle(trainArray)
+        np.random.shuffle(train_array)
 
-        # Extract values to numpy.Arrays
-        self.X = trainArray[:, 1:]
-        self.Y = trainArray[:, 0]
+        # Extract values to numpy arrays
+        self.X = train_array[:, 1:]
+        self.Y = train_array[:, 0]
 
         self.grided_params = []
         self.dtr = None
 
-        # Split to train-test sets
+        # Split into train-test sets
         self.X_train, self.X_test, self.Y_train, self.Y_test = train_test_split(self.X, self.Y, test_size=0.3,
                                                                                 random_state=0)
 
-    def __str__(self):
+    def __str__(self) -> None:
         """
         Printing data
         :return: None
@@ -57,67 +57,64 @@ class DTRegressior:
         print("Features: {}, Labels: {}".format(self.X, self.Y))
 
     @staticmethod
-    def map_columns(df, colnumber: int):
+    def map_columns(df: pd.DataFrame, col_number: int) -> dict:
         """
-        Mapping non numeric values to numeric
-        :param df: pandas dataframe that contain dataset
-        :param colnumber: number collumn to map
-        :return: dictionary with mapped values
+        Mapping non-numeric values to numeric
+        :param df: Pandas DataFrame that contains the dataset
+        :param col_number: Column number to map
+        :return: Dictionary with mapped values
         """
-        return dict([(y, x + 1) for x, y in enumerate(sorted(set(df[colnumber].unique())))])
+        return dict([(y, x + 1) for x, y in enumerate(sorted(set(df[col_number].unique())))])
 
-    def rescale(self):
+    def rescale(self) -> None:
         """
-        Rescaling data in dataset to [0,1]
+        Rescaling data in the dataset to [0, 1]
         :return: None
         """
         scaler = MinMaxScaler(feature_range=(0, 1))
         self.X_train = scaler.fit_transform(self.X_train)
-        self.X_test = scaler.fit_transform(self.X_test)
+        self.X_test = scaler.transform(self.X_test)
 
-    def normalize(self):
+    def normalize(self) -> None:
         """
-        Normalizing data in dataset
+        Normalizing data in the dataset
         :return: None
         """
         scaler = Normalizer()
         self.X_train = scaler.fit_transform(self.X_train)
-        self.X_test = scaler.fit_transform(self.X_test)
+        self.X_test = scaler.transform(self.X_test)
 
-    def standalizer(self):
+    def standardize(self) -> None:
         """
-        Standardlizing data in dataset
+        Standardizing data in the dataset
         :return: None
         """
         scaler = StandardScaler()
         self.X_train = scaler.fit_transform(self.X_train)
-        self.X_test = scaler.fit_transform(self.X_test)
+        self.X_test = scaler.transform(self.X_test)
 
-    def output(self):
+    def output(self) -> None:
         """
-        Predicting and log values
+        Predicting and logging values
         :return: None
         """
         y_pred = self.dtr.predict(self.X_test)
-        log.info(f"MSE: {mean_squared_error(self.Y_test, y_pred)}")
-        for x, y in zip(y_pred, self.Y_test):
-            log.info(f"Predicted: {x}| Actual: {y}")
+        log.info(f"R2 Score: {r2_score(self.Y_test, y_pred):.2f}")
 
-    def train_model(self):
+    def train_model(self) -> None:
         """
-        Fiting model with grid search hyper-parameters
+        Fitting the model with grid search hyperparameters
         :return: None
         """
         self.dtr = DecisionTreeRegressor(max_depth=self.grided_params[0])
         self.dtr.fit(self.X_train, self.Y_train)
 
-    def grid_search(self):
+    def grid_search(self) -> None:
         """
-        Sklearn hyper-parameters grid search
+        Perform grid search for hyperparameters
         :return: None
         """
         hyperparam_grid = {'max_depth': np.arange(2, 15)}
-        classifier = GridSearchCV(DecisionTreeRegressor(), hyperparam_grid, cv=5, iid=False,
-                                  scoring='explained_variance')
+        classifier = GridSearchCV(DecisionTreeRegressor(), hyperparam_grid, cv=5, scoring='explained_variance')
         classifier.fit(self.X_train, self.Y_train)
         self.grided_params = [classifier.best_estimator_.max_depth]
