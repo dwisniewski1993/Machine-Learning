@@ -7,6 +7,7 @@ from sklearn.neural_network import MLPClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import KFold
+from sklearn.metrics import f1_score
 from sklearn.preprocessing import *
 import pandas as pd
 import numpy as np
@@ -17,9 +18,10 @@ class EnsembleVotingClassifier:
     """
     Ensemble Voting Classifier
     """
-    def __init__(self, trainfile):
+
+    def __init__(self, trainfile: str):
         """
-        Ensemble Classfier Constructor
+        Ensemble Classifier Constructor
         :param trainfile: iris data csv path
         """
         log.getLogger().setLevel(log.INFO)
@@ -48,7 +50,7 @@ class EnsembleVotingClassifier:
         self.X_train, self.X_test, self.Y_train, self.Y_test = train_test_split(self.X, self.Y, test_size=0.2,
                                                                                 random_state=0)
         seed = 4
-        self.kfold = KFold(n_splits=10, random_state=seed)
+        self.kfold = KFold(n_splits=10, random_state=seed, shuffle=True)
 
         self.estimators = []
         self.model_1 = LogisticRegression(random_state=0, solver='lbfgs', multi_class='multinomial', max_iter=200)
@@ -95,16 +97,16 @@ class EnsembleVotingClassifier:
         self.sample_virginica = sample.reshape(1, -1)
 
     @staticmethod
-    def map_labels(labels):
+    def map_labels(labels: np.ndarray) -> list:
         """
-        Maping iris data labels to numeric
+        Mapping iris data labels to numeric
         :param labels: numpy.Arrays contains labels
         :return: list of mapped values
         """
         maped = [0.0 if x == 'Iris-setosa' else 1.0 if x == 'Iris-versicolor' else 2.0 for x in labels]
         return maped
 
-    def rescale(self):
+    def rescale(self) -> None:
         """
         Rescaling data in dataset to [0,1]
         :return: None
@@ -113,114 +115,94 @@ class EnsembleVotingClassifier:
         self.X_train = scaler.fit_transform(self.X_train)
         self.X_test = scaler.fit_transform(self.X_test)
 
-    def normalize(self):
+    def normalize(self) -> None:
         """
         Normalizing data in dataset
-        :return: None
-        """
-        scaler = Normalizer()
-        self.X_train = scaler.fit_transform(self.X_train)
-        self.X_test = scaler.fit_transform(self.X_test)
-
-    def standalizer(self):
-        """
-        Standardlizing data in dataset
         :return: None
         """
         scaler = StandardScaler()
         self.X_train = scaler.fit_transform(self.X_train)
         self.X_test = scaler.fit_transform(self.X_test)
 
-    def get_val_results(self):
+    def standardize(self) -> None:
+        """
+        Standardizing data in dataset
+        :return: None
+        """
+        scaler = StandardScaler()
+        self.X_train = scaler.fit_transform(self.X_train)
+        self.X_test = scaler.fit_transform(self.X_test)
+
+    def get_val_results(self) -> np.ndarray:
         """
         Cross validation classification score
-        :return:
+        :return: array of scores
         """
         return cross_val_score(self.ensemble, self.X, self.Y, cv=self.kfold)
 
-    def train_model(self):
+    def train_model(self) -> None:
         """
         Training models
         :return: None
         """
         self.ensemble.fit(self.X_train, self.Y_train)
 
-    def output_score(self):
+    def output_score(self) -> None:
         """
         Calculating and logging accuracy score
         :return: None
         """
         log.info(f"Accuracy: {self.ensemble.score(self.X_test, self.Y_test):.2f}")
+        log.info(f"F1 Score: {f1_score(self.Y_test, self.ensemble.predict(self.X_test), average='weighted'):.2f}")
 
-    def output_predictions(self):
+    def output_predictions(self) -> None:
         print("Sample 1 --------------SETOSA___0___---------------------")
         print("Voting prediction: ", self.ensemble.predict(self.sample_setosa))
-
         print("Logistic Regression prediction: ", self.ensemble.named_estimators_.logistic.predict(self.sample_setosa))
         print("Accuracy: {:.2f}".format(self.ensemble.named_estimators_.logistic.score(self.X_test, self.Y_test)))
-
         print("Naive Bayes predictions: ", self.ensemble.named_estimators_.naiveB.predict(self.sample_setosa))
         print("Accuracy: {:.2f}".format(self.ensemble.named_estimators_.naiveB.score(self.X_test, self.Y_test)))
-
         print("SVM prediction: ", self.ensemble.named_estimators_.svm.predict(self.sample_setosa))
         print("Accuracy: {:.2f}".format(self.ensemble.named_estimators_.svm.score(self.X_test, self.Y_test)))
-
         print("Forest prediction: ", self.ensemble.named_estimators_.forest.predict(self.sample_setosa))
         print("Accuracy: {:.2f}".format(self.ensemble.named_estimators_.forest.score(self.X_test, self.Y_test)))
-
         print("KNN prediction: ", self.ensemble.named_estimators_.knn.predict(self.sample_setosa))
         print("Accuracy: {:.2f}".format(self.ensemble.named_estimators_.knn.score(self.X_test, self.Y_test)))
-
         print("Gradient Boosting Classifier prediction: ", self.ensemble.named_estimators_.GBC.predict(self.sample_setosa))
         print("Accuracy: {:.2f}".format(self.ensemble.named_estimators_.GBC.score(self.X_test, self.Y_test)))
-
         print("Multi Layer Perceptron prediction: ", self.ensemble.named_estimators_.MLP.predict(self.sample_setosa))
         print("Accuracy: {:.2f}".format(self.ensemble.named_estimators_.MLP.score(self.X_test, self.Y_test)))
 
         print("Sample 2 --------------SETOSA___1___---------------------")
         print("Voting prediction: ", self.ensemble.predict(self.sample_versicolor))
-
         print("Logistic Regression prediction: ", self.ensemble.named_estimators_.logistic.predict(self.sample_versicolor))
         print("Accuracy: {:.2f}".format(self.ensemble.named_estimators_.logistic.score(self.X_test, self.Y_test)))
-
         print("Naive Bayes predictions: ", self.ensemble.named_estimators_.naiveB.predict(self.sample_versicolor))
         print("Accuracy: {:.2f}".format(self.ensemble.named_estimators_.naiveB.score(self.X_test, self.Y_test)))
-
         print("SVM prediction: ", self.ensemble.named_estimators_.svm.predict(self.sample_versicolor))
         print("Accuracy: {:.2f}".format(self.ensemble.named_estimators_.svm.score(self.X_test, self.Y_test)))
-
         print("Forest prediction: ", self.ensemble.named_estimators_.forest.predict(self.sample_versicolor))
         print("Accuracy: {:.2f}".format(self.ensemble.named_estimators_.forest.score(self.X_test, self.Y_test)))
-
         print("KNN prediction: ", self.ensemble.named_estimators_.knn.predict(self.sample_versicolor))
         print("Accuracy: {:.2f}".format(self.ensemble.named_estimators_.knn.score(self.X_test, self.Y_test)))
-
         print("Gradient Boosting Classifier prediction: ", self.ensemble.named_estimators_.GBC.predict(self.sample_versicolor))
         print("Accuracy: {:.2f}".format(self.ensemble.named_estimators_.GBC.score(self.X_test, self.Y_test)))
-
         print("Multi Layer Perceptron prediction: ", self.ensemble.named_estimators_.MLP.predict(self.sample_versicolor))
         print("Accuracy: {:.2f}".format(self.ensemble.named_estimators_.MLP.score(self.X_test, self.Y_test)))
 
         print("Sample 3 --------------SETOSA___2___---------------------")
         print("Voting prediction: ", self.ensemble.predict(self.sample_virginica))
-
         print("Logistic Regression prediction: ", self.ensemble.named_estimators_.logistic.predict(self.sample_virginica))
         print("Accuracy: {:.2f}".format(self.ensemble.named_estimators_.logistic.score(self.X_test, self.Y_test)))
-
         print("Naive Bayes predictions: ", self.ensemble.named_estimators_.naiveB.predict(self.sample_virginica))
         print("Accuracy: {:.2f}".format(self.ensemble.named_estimators_.naiveB.score(self.X_test, self.Y_test)))
-
         print("SVM prediction: ", self.ensemble.named_estimators_.svm.predict(self.sample_virginica))
         print("Accuracy: {:.2f}".format(self.ensemble.named_estimators_.svm.score(self.X_test, self.Y_test)))
-
         print("Forest prediction: ", self.ensemble.named_estimators_.forest.predict(self.sample_virginica))
         print("Accuracy: {:.2f}".format(self.ensemble.named_estimators_.forest.score(self.X_test, self.Y_test)))
-
         print("KNN prediction: ", self.ensemble.named_estimators_.knn.predict(self.sample_virginica))
         print("Accuracy: {:.2f}".format(self.ensemble.named_estimators_.knn.score(self.X_test, self.Y_test)))
-
         print("Gradient Boosting Classifier prediction: ", self.ensemble.named_estimators_.GBC.predict(self.sample_virginica))
         print("Accuracy: {:.2f}".format(self.ensemble.named_estimators_.GBC.score(self.X_test, self.Y_test)))
-
         print("Multi Layer Perceptron prediction: ", self.ensemble.named_estimators_.MLP.predict(self.sample_virginica))
         print("Accuracy: {:.2f}".format(self.ensemble.named_estimators_.MLP.score(self.X_test, self.Y_test)))
