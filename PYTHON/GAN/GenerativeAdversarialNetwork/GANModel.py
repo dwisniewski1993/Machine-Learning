@@ -2,10 +2,10 @@ import logging as log
 
 import matplotlib.pyplot as plt
 import numpy as np
-from tensorflow.python.keras.datasets import mnist
+import tensorflow as tf
+from tensorflow.python.keras.optimizers import adam_v2
 from tensorflow.python.keras.layers import Dense, LeakyReLU, Dropout, Input
 from tensorflow.python.keras.models import Sequential, Model
-from tensorflow.python.keras.optimizers import Adam
 from tqdm import tqdm
 
 
@@ -21,7 +21,7 @@ class GAN:
 
     @staticmethod
     def load_data() -> tuple:
-        (x_train, y_train), (x_test, y_test) = mnist.load_data()
+        (x_train, y_train), (x_test, y_test) = tf.keras.datasets.mnist.load_data()
         x_train = (x_train.astype(np.float32) - 127.5) / 127.5
         x_train = x_train.reshape(x_train.shape[0], x_train.shape[1] * x_train.shape[2])
 
@@ -42,7 +42,7 @@ class GAN:
 
         generator.add(Dense(units=784, activation='tanh'))
 
-        generator.compile(loss='binary_crossentropy', optimizer=Adam(lr=0.0001, beta_1=0.5))
+        generator.compile(loss='binary_crossentropy', optimizer=adam_v2.Adam(lr=0.0001, beta_1=0.5))
         generator.summary()
 
         return generator
@@ -63,7 +63,7 @@ class GAN:
 
         discriminator.add(Dense(units=1, activation='sigmoid'))
 
-        discriminator.compile(loss='binary_crossentropy', optimizer=Adam(lr=0.0001, beta_1=0.5))
+        discriminator.compile(loss='binary_crossentropy', optimizer=adam_v2.Adam(lr=0.0001, beta_1=0.5))
         discriminator.summary()
 
         return discriminator
@@ -75,7 +75,7 @@ class GAN:
         gen = generator(gan_input)
         gan_output = discriminator(gen)
         gan = Model(inputs=gan_input, outputs=gan_output)
-        gan.compile(loss='binary_crossentropy', optimizer=Adam(lr=0.0001, beta_1=0.5))
+        gan.compile(loss='binary_crossentropy', optimizer=adam_v2.Adam(lr=0.0001, beta_1=0.5))
         gan.summary()
 
         return gan
