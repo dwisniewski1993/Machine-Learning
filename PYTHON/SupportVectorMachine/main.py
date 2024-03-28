@@ -1,10 +1,11 @@
 import os
 import logging
-from config import scaler_type
-from SVM.Classifier import SupportVectorMachineClassification
-from SVM.Regressor import SupportVectorMachineRegression
+from config import scaler_type  # Import scaler types from config file
+from SVM.Classifier import SupportVectorMachineClassification  # Import SVM Classification class
+from SVM.Regressor import SupportVectorMachineRegression  # Import SVM Regression class
 
 
+# Set up logging configuration
 logging.basicConfig(level=logging.INFO)
 
 
@@ -13,35 +14,35 @@ def main():
     Main function. Run SVM classification and regression tasks.
     :return: None
     """
-    # SVR Classification
-    path_class = "../../_datasets_classification"
-    files = os.listdir(path_class)
+    # SVM Classification
+    path_class = "../../_datasets_classification"  # Path to classification datasets
+    files = os.listdir(path_class)  # List files in the classification dataset directory
     for file in files:
         logging.info(f"----------{file}----------")
         logging.info('SVM Classifier')
-        train_file = f"{path_class}/{file}"
-        for each in scaler_type:
-            svm_classifier = SupportVectorMachineClassification(train_file=train_file)
-            svm_classifier.rescale_data(scaler_type=each)
-            svm_classifier.grid_search()
-            svm_classifier.train_model()
-            score = svm_classifier.score()
-            logging.info(f"F1 score for scaler {each}: {score:.2f}")
+        train_file = f"{path_class}/{file}"  # File path for classification training data
+        for each in scaler_type:  # Iterate through each scaler type
+            svm_classifier = SupportVectorMachineClassification(train_file=train_file)  # Create SVM classifier instance
+            svm_classifier.rescale_data(scaler_type=each)  # Rescale data using specified scaler type
+            svm_classifier.grid_search()  # Perform grid search for hyperparameters
+            svm_classifier.train_model()  # Train the model
+            score = svm_classifier.score()  # Calculate F1 score
+            logging.info(f"F1 score for scaler {each}: {score:.2f}")  # Log F1 score
 
-    # SVR Regression
-    path_reg = "../../_datasets_regression"
-    files = os.listdir(path_reg)
+    # SVM Regression
+    path_reg = "../../_datasets_regression"  # Path to regression datasets
+    files = os.listdir(path_reg)  # List files in the regression dataset directory
     for file in files:
         logging.info(f"----------{file}----------")
         logging.info('SVM Regressor')
-        train_file = f"{path_reg}/{file}"
-        for each in scaler_type:
-            svr_regression = SupportVectorMachineRegression(train_file=train_file)
-            svr_regression.rescale_data(scaler_type=each)
-            svr_regression.grid_search()
-            svr_regression.train_model()
-            score = svr_regression.score()
-            logging.info(f"R2 score for scaler {each}: {score}")
+        train_file = f"{path_reg}/{file}"  # File path for regression training data
+        for each in scaler_type:  # Iterate through each scaler type
+            svm_regressor = SupportVectorMachineRegression(train_file=train_file)  # Create SVM regressor instance
+            svm_regressor.rescale_data(scaler_type=each)  # Rescale data using specified scaler type
+            svm_regressor.grid_search()  # Perform grid search for hyperparameters
+            svm_regressor.train_model()  # Train the model
+            score = svm_regressor.score()  # Calculate R2 score
+            logging.info(f"R2 score for scaler {each}: {score}")  # Log R2 score
 
 
 if __name__ == '__main__':
