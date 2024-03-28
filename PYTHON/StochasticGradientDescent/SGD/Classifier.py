@@ -1,12 +1,9 @@
-import logging as log
-
 import numpy as np
 import pandas as pd
 from sklearn.metrics import f1_score
 from sklearn.linear_model import SGDClassifier
 from sklearn.model_selection import train_test_split, GridSearchCV
-from sklearn.preprocessing import *
-from config import parameters
+from config import parameters, scaler  # Assuming `config` module contains predefined parameters and scalers
 
 
 class StochasticGradientDescentClassification:
@@ -16,80 +13,66 @@ class StochasticGradientDescentClassification:
 
     def __init__(self, train_file):
         """
-        SGD Classification Constructor
-        Loading and preparing data
-        :param train_file: iris data csv path
+        Constructor for SGD Classification
+        Loads and prepares data
         """
-        log.getLogger().setLevel(log.INFO)
-        log.info('SGD Classification')
 
-        # Load set
         self.trainFile = train_file
-        train_data_frame = pd.read_csv(self.trainFile)
+        train_data_frame = pd.read_csv(self.trainFile).dropna()  # Load data and drop missing values
         train_array = train_data_frame.values
 
-        # Shuffle Data
         np.random.shuffle(train_array)
 
-        # Extract values to numpy.Arrays
-        self.X = train_array[:, 0:4]
-        self.Y = train_array[:, 4]
+        cols = len(train_array[0]) - 1
 
-        self.grid_params = []
-        self.model = None
+        self.X = train_array[:, 0:cols]  # Features
+        self.Y = train_array[:, cols]  # Labels
 
-        # Map string labels to numeric
-        self.Y = self.map_labels(self.Y)
+        self.grid_params = {}  # Hyperparameters grid
+        self.model = None  # Initialized model
 
-        # Split to train-test sets
-        self.X_train, self.X_test, self.Y_train, self.Y_test = train_test_split(self.X, self.Y, test_size=0.3,
-                                                                                random_state=0)
+        self.X_train = np.ndarray  # Training features
+        self.X_test = np.ndarray  # Testing features
+        self.Y_train = np.ndarray  # Training labels
+        self.Y_test = np.ndarray  # Testing labels
+        self.X_train, self.X_test, self.Y_train, self.Y_test = train_test_split(
+            self.X, self.Y, test_size=0.3, random_state=0
+        )  # Split data into training and testing sets
 
     def __str__(self):
         """
-        Printing data
+        Prints features and labels
         :return: None
         """
         print("Features: {}, Labels: {}".format(self.X, self.Y))
 
-    @staticmethod
-    def map_labels(labels):
+    def rescale_data(self, scaler_type: str):
         """
-        Maping iris data labels to numeric
-        :param labels: numpy.Arrays contains labels
-        :return: list of mapped values
+        Normalizes data in the dataset
         """
-        return [0.0 if x == 'Iris-setosa' else 1.0 if x == 'Iris-versicolor' else 2.0 for x in labels]
+        preprocessor = scaler[scaler_type]  # Select preprocessor based on the given scaler type
+        self.X_train = preprocessor.fit_transform(self.X_train)  # Fit and transform training features
+        self.X_test = preprocessor.transform(self.X_test)  # Transform testing features
 
-    def normalize(self):
+    def score(self) -> float:
         """
-        Normalizing data in dataset
-        :return: None
+        Calculates F1 score
+        :return: Score
         """
-        scaler = Normalizer()
-        self.X_train = scaler.fit_transform(self.X_train)
-        self.X_test = scaler.fit_transform(self.X_test)
-
-    def score(self):
-        """
-        Calculating and logging f1 score
-        :return: None
-        """
-        log.info(f"F1 Score: {f1_score(self.Y_test, self.model.predict(self.X_test), average='weighted'):.2f}")
+        return f1_score(self.Y_test, self.model.predict(self.X_test), average='weighted')
 
     def grid_search(self):
         """
-        Sklearn hyper-parameters grid search
+        Performs hyperparameters grid search
         :return: None
         """
-        classifier = GridSearchCV(SGDClassifier(), parameters, cv=5)
-        classifier.fit(self.X_train, self.Y_train)
-        self.grid_params = classifier.best_params_
+        classifier = GridSearchCV(SGDClassifier(), parameters, cv=10)  # Grid search with cross-validation
+        classifier.fit(self.X_train, self.Y_train)  # Fit the classifier to the training data
+        self.grid_params = classifier.best_params_  # Store the best parameters
 
     def train_model(self):
         """
-        Fiting model with grid search hyper-parameters
+        Fits the model with grid search hyperparameters
         :return: None
         """
-        self.model = SGDClassifier(**dict(self.grid_params))\
-            .fit(self.X_train, self.Y_train)
+        self.model = SGDClassifier(**dict(self.grid_params)).fit(self.X_train, self.Y_train)  # Fit the model
