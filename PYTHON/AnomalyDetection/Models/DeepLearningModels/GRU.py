@@ -1,8 +1,8 @@
 import absl.logging as log
 import tensorflow as tf
 from numpy import array, ndarray
-from tensorflow.python.keras.layers import Dense, CuDNNGRU, GRU
-from tensorflow.python.keras.models import Sequential
+from tensorflow.keras.layers import Dense, CuDNNGRU, GRU
+from tensorflow.keras.models import Sequential
 
 from Models.DeepLearningModels.AbstractDlModel import DLAbstractModel
 from config import GRU_NETWORK, GRU_CELLS_NUMBER, GRU_LAYERS_NUMBER, MEAN_ABSOLUTE_ERROR, ADAM_OPTIMIZER

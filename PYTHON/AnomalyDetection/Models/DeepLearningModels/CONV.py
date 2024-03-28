@@ -1,7 +1,7 @@
 import absl.logging as log
 from numpy import array, ndarray
-from tensorflow.python.keras.layers import Conv2D, MaxPooling2D, UpSampling2D
-from tensorflow.python.keras.models import Sequential
+from tensorflow.keras.layers import Conv2D, MaxPooling2D, UpSampling2D
+from tensorflow.keras.models import Sequential
 
 from Models.DeepLearningModels.AbstractDlModel import DLAbstractModel
 from Models.exeptions import InvalidShapes

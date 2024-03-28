@@ -1,15 +1,10 @@
-import logging
 from typing import Dict
 import numpy as np
 import pandas as pd
 from sklearn.svm import SVR
 from sklearn.metrics import r2_score, make_scorer
 from sklearn.model_selection import train_test_split, GridSearchCV
-from sklearn.preprocessing import StandardScaler
-from config import parameters
-
-
-logging.basicConfig(level=logging.INFO)
+from config import parameters, scaler
 
 
 class SupportVectorMachineRegression:
@@ -22,20 +17,23 @@ class SupportVectorMachineRegression:
         Loading and preparing data
         """
         self.trainFile = train_file
-        train_data_frame = pd.read_csv(self.trainFile, sep='\t', header=None)
+        train_data_frame = pd.read_csv(self.trainFile)
 
-        self.mapping_string = self.map_columns(train_data_frame, 4)
-        self.mapping_bool = self.map_columns(train_data_frame, 1)
-        train_data_frame = train_data_frame.applymap(
-            lambda x: self.mapping_string.get(x) if x in self.mapping_string else x)
-        train_data_frame = train_data_frame.applymap(
-            lambda x: self.mapping_bool.get(x) if x in self.mapping_bool else x)
+        string_columns = train_data_frame.select_dtypes(include='object').columns.tolist()
+
+        for col in string_columns:
+            self.mapping_string = self.map_columns(train_data_frame, col)
+            train_data_frame = train_data_frame.map(
+                lambda x: self.mapping_string.get(x) if x in self.mapping_string else x)
+
         train_array = train_data_frame.values
 
         np.random.shuffle(train_array)
 
-        self.X = train_array[:, 1:]
-        self.Y = train_array[:, 0]
+        cols = len(train_array[0]) - 1
+
+        self.X = train_array[:, 0:cols]
+        self.Y = train_array[:, cols]
 
         self.grid_params = {}
         self.model = None
@@ -55,26 +53,26 @@ class SupportVectorMachineRegression:
         print("Features: {}, Labels: {}".format(self.X, self.Y))
 
     @staticmethod
-    def map_columns(df: pd.DataFrame, col_number: int) -> Dict:
+    def map_columns(df: pd.DataFrame, col_number: str) -> Dict:
         """
         Mapping non-numeric values to numeric
         """
         return {y: x + 1 for x, y in enumerate(sorted(set(df[col_number].unique())))}
 
-    def standardize(self):
+    def rescale_data(self, scaler_type: str):
         """
         Normalizing data in dataset
         """
-        scaler = StandardScaler()
-        self.X_train = scaler.fit_transform(self.X_train)
-        self.X_test = scaler.transform(self.X_test)
+        preprocessor = scaler[scaler_type]
+        self.X_train = preprocessor.fit_transform(self.X_train)
+        self.X_test = preprocessor.transform(self.X_test)
 
-    def score(self):
+    def score(self) -> float:
         """
-        Calculating and logging accuracy score
+        Calculating R2 score
         """
         y_pred = self.model.predict(self.X_test)
-        logging.info(f"R2 Score: {r2_score(self.Y_test, y_pred)}")
+        return r2_score(self.Y_test, y_pred)
 
     def grid_search(self):
         """

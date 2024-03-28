@@ -1,8 +1,8 @@
 import absl.logging as log
 from numpy import array, ndarray
 from tensorflow.python.keras import regularizers
-from tensorflow.python.keras.layers import Dense
-from tensorflow.python.keras.models import Sequential
+from tensorflow.keras.layers import Dense
+from tensorflow.keras.models import Sequential
 
 from Models.DeepLearningModels.AbstractDlModel import DLAbstractModel
 from config import MEAN_ABSOLUTE_ERROR, ADAM_OPTIMIZER, FORWARD_NETWORK, PRIMARY_UNITS_SIZE, SECONDARY_UNITS_SIZE, \

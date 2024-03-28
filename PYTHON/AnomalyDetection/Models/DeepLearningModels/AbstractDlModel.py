@@ -5,8 +5,8 @@ import absl.logging as log
 import numpy as np
 import tensorflow as tf
 from scipy.spatial import distance
-from tensorflow.python.keras.callbacks import TensorBoard, EarlyStopping
-from tensorflow.python.keras.models import Sequential
+from tensorflow.keras.callbacks import TensorBoard, EarlyStopping
+from tensorflow.keras.models import Sequential
 
 from Models.AMI import AbstractModelInterface
 from Models.Utils import Preprocessing
