@@ -1,5 +1,5 @@
 import numpy as np
-from tensorflow.keras.models import Sequential, load_model
+import tensorflow.keras as tk
 from tensorflow.keras.layers import Dense
 from tensorflow.keras.optimizers import Adam
 from collections import deque
@@ -23,7 +23,7 @@ class DeepQLearning:
         self.target_model = self.create_model()
 
         if exists(f'{MODEL_NAME}.model'):
-            self.model = load_model(f'{MODEL_NAME}.model')
+            self.model = tk.load_model(f'{MODEL_NAME}.model')
 
         self.replay_memory = deque(maxlen=REPLAY_MEMORY_SIZE)
 
@@ -32,14 +32,14 @@ class DeepQLearning:
         self.ep_rewards = []
 
     def create_model(self):
-        model = Sequential()
+        model = tk.Sequential()
 
         model.add(Dense(32, activation='relu'))
         model.add(Dense(16, activation='relu'))
         model.add(Dense(8, activation='relu'))
 
         model.add(Dense(self.env.action_space.n, activation='linear'))
-        model.compile(loss="mse", optimizer=Adam(lr=0.001), metrics=['accuracy'])
+        model.compile(loss="mse", optimizer=Adam(), metrics=['accuracy'])
         return model
 
     def update_replay_memory(self, transition):
@@ -125,7 +125,7 @@ class DeepQLearning:
                 else:
                     action = np.random.randint(0, self.env.action_space.n)
 
-                new_state, reward, done, _ = self.env.step(action)
+                new_state, reward, done, _, () = self.env.step(action)
 
                 episode_reward += reward
 
