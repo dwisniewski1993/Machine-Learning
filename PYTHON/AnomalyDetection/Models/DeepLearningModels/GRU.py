@@ -1,8 +1,8 @@
 import absl.logging as log
-import tensorflow as tf
+from keras.layers import Input
+from keras.models import Sequential
 from numpy import array, ndarray
-from tensorflow.keras.layers import Dense, CuDNNGRU, GRU
-from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, GRU
 
 from Models.DeepLearningModels.AbstractDlModel import DLAbstractModel
 from config import GRU_NETWORK, GRU_CELLS_NUMBER, GRU_LAYERS_NUMBER, MEAN_ABSOLUTE_ERROR, ADAM_OPTIMIZER
@@ -36,16 +36,13 @@ class GRUModel(DLAbstractModel):
         Returns:
             Sequential: Keras Sequential model.
         """
-        physical_devices = tf.config.list_physical_devices('GPU')
-        if len(physical_devices) > 0:
-            rnn_cell = CuDNNGRU
-        else:
-            rnn_cell = GRU
+        rnn_cell = GRU
 
-        model = Sequential()
-        for i in range(GRU_LAYERS_NUMBER):
-            model.add(rnn_cell(units=GRU_CELLS_NUMBER, input_shape=(self.window_size, self.dim), return_sequences=True))
-        model.add(Dense(units=self.dim, activation='tanh'))
+        model = Sequential([
+            Input(shape=(self.window_size, self.dim)),
+            *[rnn_cell(units=GRU_CELLS_NUMBER, return_sequences=True) for _ in range(GRU_LAYERS_NUMBER)],
+            Dense(units=self.dim, activation='tanh')
+        ])
         model.compile(loss=MEAN_ABSOLUTE_ERROR, optimizer=ADAM_OPTIMIZER)
         log.info(f"Defining {self.model_name} neural network architecture...")
 

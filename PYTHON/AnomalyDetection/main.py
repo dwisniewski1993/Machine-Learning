@@ -2,7 +2,6 @@ from Models.DeepLearningModels.CONV import CONVModel
 from Models.DeepLearningModels.Forward import FFModel
 from Models.DeepLearningModels.GRU import GRUModel
 from Models.DeepLearningModels.LSTM import LSTMModel
-from Models.FuzzyLogicModel.Fuzzy import FuzzyModel
 from Models.MachineLearningModels.IsolationForrest import IsolationForrestModel
 from Models.MachineLearningModels.OneClassSVMM import OneClassSVMModel
 from Models.Utils import DataHandler, Results
@@ -28,14 +27,6 @@ def main() -> None:
     anomaly_data = data_handler.get_dataset_broken()
     labels = data_handler.get_broken_labels()
 
-    # Fuzzy Time Series
-    fts = FuzzyModel(healthy_data=health_data, broken_data=anomaly_data, dataset_name='Generated', data_labels=labels)
-    fts.train()
-    yhat_healthy = fts.score(data=fts.get_normal_data())
-    yhat_broken = fts.score(data=fts.get_anomaly_data())
-    fts.calculate_threshold(health=yhat_healthy)
-    fts.anomaly_score(pred=yhat_broken)
-
     # One Class SVM
     svm = OneClassSVMModel(healthy_data=health_data, broken_data=anomaly_data, dataset_name='Generated',
                            data_labels=labels)
@@ -52,8 +43,8 @@ def main() -> None:
     forward = FFModel(healthy_data=health_data, broken_data=anomaly_data, dataset_name='Generated', data_labels=labels,
                       windows_size=WINDOW_SIZE)
     forward.train(retrain=RETRAIN, tensor_board=TENSORBOARD, early_stopping=EARLY_STOPPING)
-    yhat_healthy = forward.score(data=forward.get_normal_data())
-    yhat_broken = forward.score(data=forward.get_anomaly_data())
+    yhat_healthy = forward.score(data=forward.normal_data)
+    yhat_broken = forward.score(data=forward.anomaly_data)
     forward.calculate_threshold(health=yhat_healthy)
     forward.anomaly_score(pred=yhat_broken)
 
@@ -61,8 +52,8 @@ def main() -> None:
     lstm = LSTMModel(healthy_data=health_data, broken_data=anomaly_data, dataset_name='Generated', data_labels=labels,
                      windows_size=WINDOW_SIZE)
     lstm.train(retrain=RETRAIN, tensor_board=TENSORBOARD, early_stopping=EARLY_STOPPING)
-    yhat_healthy = lstm.score(data=lstm.get_normal_data())
-    yhat_broken = lstm.score(data=lstm.get_anomaly_data())
+    yhat_healthy = lstm.score(data=lstm.normal_data)
+    yhat_broken = lstm.score(data=lstm.anomaly_data)
     lstm.calculate_threshold(health=yhat_healthy)
     lstm.anomaly_score(pred=yhat_broken)
 
@@ -70,8 +61,8 @@ def main() -> None:
     gru = GRUModel(healthy_data=health_data, broken_data=anomaly_data, dataset_name='Generated', data_labels=labels,
                    windows_size=WINDOW_SIZE)
     gru.train(retrain=RETRAIN, tensor_board=TENSORBOARD, early_stopping=EARLY_STOPPING)
-    yhat_healthy = gru.score(data=gru.get_normal_data())
-    yhat_broken = gru.score(data=gru.get_anomaly_data())
+    yhat_healthy = gru.score(data=gru.normal_data)
+    yhat_broken = gru.score(data=gru.anomaly_data)
     gru.calculate_threshold(health=yhat_healthy)
     gru.anomaly_score(pred=yhat_broken)
 
@@ -79,8 +70,8 @@ def main() -> None:
     conv = CONVModel(healthy_data=health_data, broken_data=anomaly_data, dataset_name='Generated', data_labels=labels,
                      windows_size=WINDOW_SIZE)
     conv.train(retrain=RETRAIN, tensor_board=TENSORBOARD, early_stopping=EARLY_STOPPING)
-    yhat_healthy = conv.score(data=conv.get_normal_data())
-    yhat_broken = conv.score(data=conv.get_anomaly_data())
+    yhat_healthy = conv.score(data=conv.normal_data)
+    yhat_broken = conv.score(data=conv.anomaly_data)
     conv.calculate_threshold(health=yhat_healthy)
     conv.anomaly_score(pred=yhat_broken)
 

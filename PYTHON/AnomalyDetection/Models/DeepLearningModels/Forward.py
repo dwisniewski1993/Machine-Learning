@@ -1,8 +1,9 @@
 import absl.logging as log
+from keras.layers import Input
+from keras.models import Sequential
 from numpy import array, ndarray
-from tensorflow.python.keras import regularizers
 from tensorflow.keras.layers import Dense
-from tensorflow.keras.models import Sequential
+from tensorflow.python.keras import regularizers
 
 from Models.DeepLearningModels.AbstractDlModel import DLAbstractModel
 from config import MEAN_ABSOLUTE_ERROR, ADAM_OPTIMIZER, FORWARD_NETWORK, PRIMARY_UNITS_SIZE, SECONDARY_UNITS_SIZE, \
@@ -38,18 +39,19 @@ class FFModel(DLAbstractModel):
             Sequential: Keras Sequential model.
         """
         log.info('Defining FeedForward Autoencoder neural network architecture...')
-        model = Sequential()
-        model.add(Dense(PRIMARY_UNITS_SIZE, activation='tanh', activity_regularizer=regularizers.l1(10e-5),
-                        input_shape=(self.window_size, self.dim)))
-        model.add(Dense(SECONDARY_UNITS_SIZE, activation='relu'))
-        model.add(Dense(TERTIARY_UNITS_SIZE, activation='relu'))
-        model.add(Dense(QUATERNARY_UNITS_SIZE, activation='relu'))
+        model = Sequential([
+            Input(shape=(self.window_size, self.dim)),
+            Dense(PRIMARY_UNITS_SIZE, activation='tanh', activity_regularizer=regularizers.l1(10e-5)),
+            Dense(SECONDARY_UNITS_SIZE, activation='relu'),
+            Dense(TERTIARY_UNITS_SIZE, activation='relu'),
+            Dense(QUATERNARY_UNITS_SIZE, activation='relu'),
 
-        model.add(Dense(QUATERNARY_UNITS_SIZE, activation='relu'))
-        model.add(Dense(TERTIARY_UNITS_SIZE, activation='relu'))
-        model.add(Dense(SECONDARY_UNITS_SIZE, activation='relu'))
-        model.add(Dense(PRIMARY_UNITS_SIZE, activation='relu'))
-        model.add(Dense(self.dim, activation='relu'))
+            Dense(QUATERNARY_UNITS_SIZE, activation='relu'),
+            Dense(TERTIARY_UNITS_SIZE, activation='relu'),
+            Dense(SECONDARY_UNITS_SIZE, activation='relu'),
+            Dense(PRIMARY_UNITS_SIZE, activation='relu'),
+            Dense(self.dim, activation='relu')
+        ])
 
         model.compile(optimizer=ADAM_OPTIMIZER, loss=MEAN_ABSOLUTE_ERROR)
         return model

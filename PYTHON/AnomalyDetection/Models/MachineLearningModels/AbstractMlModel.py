@@ -47,14 +47,16 @@ class AbstractMlModel(AbstractModelInterface):
         if retrain:
             log.info(f"Start training {self.model_name} model...")
             self.model.fit(data)
+            np.save(f"{self.data_name}__{self.model_name}_model.npy", self.model)
         else:
-            if os.path.exists(f"{self.data_name}__{self.model_name}_model.npy"):
+            model_file_path = f"{self.data_name}__{self.model_name}_model.npy"
+            if os.path.exists(model_file_path):
                 log.info(f"Loading {self.model_name} model...")
-                self.model = np.load(f"{self.data_name}__{self.model_name}_model.npy", allow_pickle=True)
+                self.model = np.load(model_file_path, allow_pickle=True)
             else:
                 log.info(f"Start training {self.model_name} model...")
                 self.model.fit(data)
-                np.save(f"{self.data_name}__{self.model_name}_model.npy", self.model)
+                np.save(model_file_path, self.model)
 
     def score(self, data: np.ndarray) -> None:
         """
@@ -63,14 +65,14 @@ class AbstractMlModel(AbstractModelInterface):
         :param data: Data for prediction
         """
         log.info('Calculating anomaly score...')
-        if os.path.exists(f"{self.model_name}_detected_{self.data_name}.csv"):
+        results_file_path = f"{self.model_name}_detected_{self.data_name}.csv"
+        if os.path.exists(results_file_path):
             log.info('Predictions already exist')
         else:
-            with open(f"{self.model_name}_detected_{self.data_name}.csv", 'w') as results:
+            with open(results_file_path, 'w') as results:
                 predictions = [self.model.predict(data[i].reshape(1, -1)) for i in tqdm(range(len(data)))]
                 for i in tqdm(range(len(predictions))):
                     if predictions[i]:
                         results.write(f"1.0,{self.Y[i]},Normal\n")
                     else:
                         results.write(f"0.0,{self.Y[i]},Anomaly\n")
-            results.close()

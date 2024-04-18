@@ -1,7 +1,8 @@
 import absl.logging as log
+from keras.layers import Conv2D, MaxPooling2D, UpSampling2D
+from keras.layers import Input
+from keras.models import Sequential
 from numpy import array, ndarray
-from tensorflow.keras.layers import Conv2D, MaxPooling2D, UpSampling2D
-from tensorflow.keras.models import Sequential
 
 from Models.DeepLearningModels.AbstractDlModel import DLAbstractModel
 from Models.exeptions import InvalidShapes
@@ -24,15 +25,14 @@ class CONVModel(DLAbstractModel):
         Define the specific Conv2D architecture: activation, number of layers, optimizer, and error measure.
         :return: Keras Sequential Model
         """
-        model = Sequential()
-        model.add(Conv2D(filters=CONV_CELLS_NUMBER, kernel_size=CONV_KERNEL_SIZE, activation='relu', padding='same',
-                         input_shape=[self.window_size, self.dim, SINGLE_UNIT]))
-        model.add(MaxPooling2D(CONV_POOL_SIZE))
-
-        model.add(Conv2D(filters=CONV_CELLS_NUMBER, kernel_size=CONV_KERNEL_SIZE, activation='relu', padding='same'))
-        model.add(UpSampling2D(CONV_POOL_SIZE))
-        model.add(Conv2D(SINGLE_UNIT, kernel_size=CONV_KERNEL_SIZE, activation='sigmoid', padding='same'))
-
+        model = Sequential([
+            Input(shape=(self.window_size, self.dim, SINGLE_UNIT)),
+            Conv2D(filters=CONV_CELLS_NUMBER, kernel_size=CONV_KERNEL_SIZE, activation='relu', padding='same'),
+            MaxPooling2D(CONV_POOL_SIZE),
+            Conv2D(filters=CONV_CELLS_NUMBER, kernel_size=CONV_KERNEL_SIZE, activation='relu', padding='same'),
+            UpSampling2D(CONV_POOL_SIZE),
+            Conv2D(SINGLE_UNIT, kernel_size=CONV_KERNEL_SIZE, activation='sigmoid', padding='same')
+        ])
         model.compile(optimizer=ADAM_OPTIMIZER, loss=MEAN_ABSOLUTE_ERROR)
         log.info(f"Defining {self.model_name} network architecture...")
         return model
@@ -42,21 +42,18 @@ class CONVModel(DLAbstractModel):
         Reshape data for regression.
         :return: None
         """
-        normal_samples = len(self.normal_data)
-        normal_dim = len(self.normal_data[0])
 
-        try:
-            self.normal_data.shape = (int(normal_samples / self.window_size), self.window_size, normal_dim, SINGLE_UNIT)
-        except InvalidShapes:
-            raise InvalidShapes("Something is wrong with the dataset shapes.")
+        def reshape_array(arr: ndarray) -> ndarray:
+            samples = len(arr)
+            dim = len(arr[0])
+            try:
+                arr.shape = (int(samples / self.window_size), self.window_size, dim, SINGLE_UNIT)
+            except InvalidShapes:
+                raise InvalidShapes("Something is wrong with the dataset shapes.")
+            return arr
 
-        anomaly_samples = len(self.anomaly_data)
-        anomaly_dim = len(self.anomaly_data[0])
-        try:
-            self.anomaly_data.shape = (int(anomaly_samples / self.window_size), self.window_size, anomaly_dim,
-                                       SINGLE_UNIT)
-        except InvalidShapes:
-            raise InvalidShapes("Something is wrong with the dataset shapes.")
+        self.normal_data = reshape_array(self.normal_data)
+        self.anomaly_data = reshape_array(self.anomaly_data)
 
         self.dim = self.normal_data.shape[2]
         self.samples = self.normal_data.shape[0]

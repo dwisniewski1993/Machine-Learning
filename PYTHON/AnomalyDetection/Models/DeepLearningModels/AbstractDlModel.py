@@ -4,9 +4,9 @@ from time import time
 import absl.logging as log
 import numpy as np
 import tensorflow as tf
+from keras.callbacks import EarlyStopping, TensorBoard
+from keras.models import Sequential
 from scipy.spatial import distance
-from tensorflow.keras.callbacks import TensorBoard, EarlyStopping
-from tensorflow.keras.models import Sequential
 
 from Models.AMI import AbstractModelInterface
 from Models.Utils import Preprocessing
@@ -61,18 +61,17 @@ class DLAbstractModel(AbstractModelInterface):
 
         :return: None
         """
-        normal_samples = len(self.normal_data)
-        normal_dim = len(self.normal_data[0])
-
+        normal_samples, normal_dim = self.normal_data.shape
         try:
-            self.normal_data.shape = (int(normal_samples / self.window_size), self.window_size, normal_dim)
+            self.normal_data = self.normal_data.reshape((int(normal_samples / self.window_size), self.window_size,
+                                                         normal_dim))
         except InvalidShapes:
             raise InvalidShapes("Something is wrong with dataset shapes")
 
-        anomaly_samples = len(self.anomaly_data)
-        anomaly_dim = len(self.anomaly_data[0])
+        anomaly_samples, anomaly_dim = self.anomaly_data.shape
         try:
-            self.anomaly_data.shape = (int(anomaly_samples / self.window_size), self.window_size, anomaly_dim)
+            self.anomaly_data = self.anomaly_data.reshape((int(anomaly_samples / self.window_size), self.window_size,
+                                                           anomaly_dim))
         except InvalidShapes:
             raise InvalidShapes("Something is wrong with dataset shapes")
 
@@ -92,7 +91,7 @@ class DLAbstractModel(AbstractModelInterface):
 
         if tensor_board:
             name = f"{self.model_name}-{self.data_name}-{int(time())}"
-            tb = TensorBoard(log_dir='logs/{}'.format(name))
+            tb = TensorBoard(log_dir=f'logs/{name}')
             callbacks.append(tb)
 
         if early_stopping:
@@ -106,21 +105,22 @@ class DLAbstractModel(AbstractModelInterface):
 
         data = self.normal_data
 
-        if os.path.exists(self.data_name + f"__{self.model_name}_model"):
+        model_file_path = f"{self.data_name}__{self.model_name}_model.keras"
+        if os.path.exists(model_file_path):
             log.info(f"Trained {self.model_name} model detected")
             if retrain:
                 log.info(f"Start training {self.model_name} Network...")
                 self.model.fit(data, data, epochs=EPOCHS, batch_size=BATCH_SIZE, validation_data=(data, data),
                                callbacks=callbacks, verbose=VERBOSE)
-                self.save_model()
+                self.save_model(model_file_path)
                 log.info(f"Training {self.model_name} done!")
             else:
-                self.load_model()
+                self.load_model(model_file_path)
         else:
             log.info(f"Start training {self.model_name} Network...")
             self.model.fit(data, data, epochs=EPOCHS, batch_size=BATCH_SIZE, validation_data=(data, data),
                            callbacks=callbacks, verbose=VERBOSE)
-            self.save_model()
+            self.save_model(model_file_path)
             log.info(f"Training {self.model_name} done!")
         self.stats(data=data)
 
@@ -138,39 +138,25 @@ class DLAbstractModel(AbstractModelInterface):
         log.info(f"Calculate {self.model_name} Score complete")
         return yhat
 
-    def save_model(self) -> None:
+    def save_model(self, file_path: str) -> None:
         """
         Save the trained model to a file.
 
+        :param file_path: Path to save the model
         :return: None
         """
         log.info(f"Saving {self.model_name} model...")
-        self.model.save(self.data_name + '__{}_model'.format(self.model_name))
+        self.model.save(file_path)
 
-    def load_model(self) -> None:
+    def load_model(self, file_path: str) -> None:
         """
         Load the model from a file.
 
+        :param file_path: Path to load the model
         :return: None
         """
         log.info(f"Load {self.model_name} model...")
-        self.model = tf.keras.models.load_model(self.data_name + '__{}_model'.format(self.model_name))
-
-    def get_normal_data(self) -> np.array:
-        """
-        Get the healthy data.
-
-        :return: Healthy data
-        """
-        return self.normal_data
-
-    def get_anomaly_data(self) -> np.array:
-        """
-        Get the broken data with anomalies.
-
-        :return: Broken data
-        """
-        return self.anomaly_data
+        self.model = tf.keras.models.load_model(file_path)
 
     def stats(self, data: np.array) -> None:
         """

@@ -2,8 +2,8 @@ from os import listdir, getcwd
 from os.path import isfile, join
 
 import absl.logging as log
+import dask.dataframe as dd
 import numpy as np
-import pandas as pd
 from sklearn.preprocessing import MinMaxScaler, StandardScaler, Normalizer, MaxAbsScaler, RobustScaler
 
 log.set_verbosity(log.INFO)
@@ -29,14 +29,12 @@ class DataHandler:
         :return: Numpy array of the data values
         """
         log.info('Start reading healthy dataset')
-        my_list = []
-        for chunk in pd.read_csv(file, sep=';', header=0, dtype=object, low_memory=False, chunksize=2000):
-            my_list.append(chunk)
-        df = pd.concat(my_list, axis=0)
+        df = dd.read_csv(file, sep=';', header=0, dtype=object, assume_missing=True)
         labels = df[df.columns[-1]]
-        df.drop(df.columns[[0, -1]], axis=1, inplace=True)
-        df = df.stack().str.replace(',', '.').unstack()
-        df = df.astype(float).fillna(0.0)
+        df = df.drop(columns=[df.columns[0], df.columns[-1]])
+        df = df.replace({',': '.'}, regex=True).astype(float).fillna(0.0)
+        df = df.compute()
+        labels = labels.compute()
         log.info('Healthy dataset loaded successfully')
         return df.values, labels.values
 
