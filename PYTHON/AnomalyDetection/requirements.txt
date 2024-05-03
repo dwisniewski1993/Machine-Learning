@@ -46,7 +46,7 @@ numpy-base==1.26.4
 scipy==1.12.0
 tbb==2021.8.0
 colorama==0.4.6
-tqdm==4.66.2
+tqdm==4.66.3
 joblib==1.4.0
 threadpoolctl==3.4.0
 scikit-learn==1.4.2
