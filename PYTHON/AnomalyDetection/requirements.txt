@@ -33,7 +33,7 @@ tensorflow-io-gcs-filesystem==0.31.0
 termcolor==2.4.0
 typing-extensions==4.11.0
 urllib3==2.2.1
-werkzeug==3.0.2
+werkzeug==3.0.3
 wrapt==1.16.0
 blas==1.0
 icc_rt==2022.1.0
