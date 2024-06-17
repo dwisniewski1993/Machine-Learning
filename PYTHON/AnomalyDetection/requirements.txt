@@ -32,7 +32,7 @@ tensorflow-intel==2.16.1
 tensorflow-io-gcs-filesystem==0.31.0
 termcolor==2.4.0
 typing-extensions==4.11.0
-urllib3==2.2.1
+urllib3==2.2.2
 werkzeug==3.0.2
 wrapt==1.16.0
 blas==1.0
