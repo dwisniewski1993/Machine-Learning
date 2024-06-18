@@ -49,7 +49,7 @@ colorama==0.4.6
 tqdm==4.66.2
 joblib==1.4.0
 threadpoolctl==3.4.0
-scikit-learn==1.4.2
+scikit-learn==1.5.0
 tzdata==2024.1
 pytz==2024.1
 python-dateutil==2.9.0.post0
