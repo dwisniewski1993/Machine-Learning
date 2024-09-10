@@ -17,28 +17,30 @@ class DataHandler:
         :param file_normal: File path of the healthy dataset
         :param file_broken: File path of the broken dataset (with anomalies)
         """
-        self.dataset_normal, _ = self.load_data(file=file_normal)
-        self.dataset_broken, self.broken_labels = self.load_data(file=file_broken)
+        self.dataset_normal, self.normal_labels = self.load_data(file_normal)
+        self.dataset_broken, self.broken_labels = self.load_data(file_broken)
 
     @staticmethod
-    def load_data(file: str) -> np.array:
+    def load_data(file: str) -> tuple[np.ndarray, np.ndarray]:
         """
         Load data from a CSV file.
 
         :param file: File path to load
-        :return: Numpy array of the data values
+        :return: Tuple containing the data values and labels as numpy arrays
         """
-        log.info('Start reading healthy dataset')
+        log.info(f'Start reading dataset from: {file}')
         df = dd.read_csv(file, sep=';', header=0, dtype=object, assume_missing=True)
-        labels = df[df.columns[-1]]
-        df = df.drop(columns=[df.columns[0], df.columns[-1]])
-        df = df.replace({',': '.'}, regex=True).astype(float).fillna(0.0)
-        df = df.compute()
-        labels = labels.compute()
-        log.info('Healthy dataset loaded successfully')
-        return df.values, labels.values
+        labels = df[df.columns[-1]].astype(str)
+        data = df.drop(columns=[df.columns[0], df.columns[-1]])
 
-    def get_dataset_normal(self) -> np.array:
+        # Replace comma with period in float values
+        data = data.replace({',': '.'}, regex=True).astype(float).fillna(0.0)
+
+        data, labels = data.compute(), labels.compute()
+        log.info(f'Dataset loaded successfully from: {file}')
+        return data.values, labels.values
+
+    def get_normal_dataset(self) -> np.ndarray:
         """
         Get the healthy dataset.
 
@@ -46,7 +48,15 @@ class DataHandler:
         """
         return self.dataset_normal
 
-    def get_dataset_broken(self) -> np.array:
+    def get_normal_labels(self) -> np.ndarray:
+        """
+        Get the labels from the healthy dataset.
+
+        :return: Labels from the healthy data
+        """
+        return self.normal_labels
+
+    def get_broken_dataset(self) -> np.ndarray:
         """
         Get the broken dataset (with anomalies).
 
@@ -54,7 +64,7 @@ class DataHandler:
         """
         return self.dataset_broken
 
-    def get_broken_labels(self) -> np.array:
+    def get_broken_labels(self) -> np.ndarray:
         """
         Get the labels from the broken dataset.
 
@@ -69,6 +79,7 @@ class Preprocessing:
         Preprocessing class for data scaling.
 
         :param scaler: Name of the scaler to use ('Min-Max', 'Standard', 'Normalize', 'Max-Abs', 'Robust')
+        :raises ValueError: If the specified scaler is not available
         """
         self.available_scalers = {
             'Min-Max': MinMaxScaler(feature_range=(0, 1)),
@@ -77,17 +88,24 @@ class Preprocessing:
             'Max-Abs': MaxAbsScaler(),
             'Robust': RobustScaler()
         }
+
+        if scaler not in self.available_scalers:
+            raise ValueError(f"Scaler '{scaler}' is not recognized. Available scalers are:"
+                             f" {', '.join(self.available_scalers.keys())}")
+
         self.scaler = self.available_scalers[scaler]
 
-    def scale_data(self, data: np.array) -> np.array:
+    def scale_data(self, data: np.ndarray) -> np.ndarray:
         """
         Scale the data using the specified scaler.
 
-        :param data: Data values
+        :param data: Data values to scale
         :return: Scaled data
         """
-        log.info('Scaling Data')
-        return self.scaler.fit_transform(data)
+        log.info('Scaling data using %s scaler', self.scaler.__class__.__name__)
+        scaled_data = self.scaler.fit_transform(data)
+        log.info('Data scaling completed successfully')
+        return scaled_data
 
 
 class Results:
@@ -109,19 +127,26 @@ class Results:
 
         :param file: Result file to calculate accuracy for
         """
-        with open(file, 'r') as rezfile:
-            tp = 0
-            tn = 0
-            fp = 0
-            fn = 0
-            for line in rezfile:
-                if line.split(',')[1] == 'Normal' and line.split(',')[2].replace('\n', '') == 'Normal':
+        with open(file, 'r') as results_file:
+            tp = tn = fp = fn = 0
+
+            for line in results_file:
+                parts = line.strip().split(',')
+                if len(parts) < 3:
+                    log.warning(f"Skipping malformed line: {line.strip()}")
+                    continue
+
+                actual, predicted = parts[1], parts[2]
+
+                if actual == 'Normal' and predicted == 'Normal':
                     tn += 1
-                elif line.split(',')[1] == 'Normal' and line.split(',')[2].replace('\n', '') == 'Anomaly':
+                elif actual == 'Normal' and predicted == 'Anomaly':
                     fp += 1
-                elif line.split(',')[1] == 'Attack' and line.split(',')[2].replace('\n', '') == 'Normal':
+                elif actual == 'Attack' and predicted == 'Normal':
                     fn += 1
-                elif line.split(',')[1] == 'Attack' and line.split(',')[2].replace('\n', '') == 'Anomaly':
+                elif actual == 'Attack' and predicted == 'Anomaly':
                     tp += 1
-            accuracy = (tp + tn) / (tp + tn + fn + fp)
-            log.info(f"Accuracy for model {file.split('_')[0]} is {accuracy}")
+
+        total = tp + tn + fp + fn
+        accuracy = (tp + tn) / total if total > 0 else 0
+        log.info(f"Accuracy for model {file.split('_')[0]} is {accuracy:.2f}")

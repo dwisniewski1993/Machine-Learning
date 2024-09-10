@@ -23,8 +23,8 @@ def main() -> None:
 
     # Load and get data
     data_handler = DataHandler(file_normal=normal_data, file_broken=anomaly_file)
-    health_data = data_handler.get_dataset_normal()
-    anomaly_data = data_handler.get_dataset_broken()
+    health_data = data_handler.get_normal_dataset()
+    anomaly_data = data_handler.get_broken_dataset()
     labels = data_handler.get_broken_labels()
 
     # One Class SVM

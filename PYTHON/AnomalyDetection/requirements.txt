@@ -1,7 +1,7 @@
 MarkupSafe==2.1.5
 absl-py==2.1.0
 astunparse==1.6.3
-certifi==2024.2.2
+certifi==2024.07.04
 charset-normalizer==3.3.2
 flatbuffers==24.3.25
 gast==0.5.4
@@ -22,7 +22,7 @@ optree==0.11.0
 packaging==24.0
 protobuf==4.25.3
 pygments==2.17.2
-requests==2.31.0
+requests==2.32.0
 rich==13.7.1
 six==1.16.0
 tensorboard==2.16.2
@@ -33,7 +33,7 @@ tensorflow-io-gcs-filesystem==0.31.0
 termcolor==2.4.0
 typing-extensions==4.11.0
 urllib3==2.2.1
-werkzeug==3.0.2
+werkzeug==3.0.3
 wrapt==1.16.0
 blas==1.0
 icc_rt==2022.1.0
@@ -46,10 +46,10 @@ numpy-base==1.26.4
 scipy==1.12.0
 tbb==2021.8.0
 colorama==0.4.6
-tqdm==4.66.2
+tqdm~=4.66.2
 joblib==1.4.0
 threadpoolctl==3.4.0
-scikit-learn==1.4.2
+scikit-learn~=1.4.2
 tzdata==2024.1
 pytz==2024.1
 python-dateutil==2.9.0.post0
