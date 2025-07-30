@@ -1,0 +1,10 @@
+[package]
+name = "LinearRegression"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+ndarray = "0.15"
+linfa = "0.7"
+linfa-linear = "0.7"
+csv = "1.2"
